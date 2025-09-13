@@ -1,10 +1,26 @@
 import tkinter as tk
 
 ventana = tk.Tk()
-ventana.title("Mi primera GUI")
-ventana.geometry("300x200")
+ventana.title("Biblioteca Cerp del Litoral")
+ventana.geometry("1280x720")
 
-etiqueta = tk.Label(ventana, text="Escribe tu nombre:")
+etiqueta = tk.Label(ventana, text="Material:")
+etiqueta.pack(pady=10)
+entrada = tk.Entry(ventana)
+entrada.pack(pady=5)
+
+def mostrar_texto():
+    material = entrada.get()  # Obtiene el texto escrito
+    resultado.config(text=f"El {material} se encuentra disponible.")
+
+boton = tk.Button(ventana, text="Buscar", command=mostrar_texto)
+boton.pack(pady=10)
+
+resultado_material = tk.Label(ventana, text="")
+resultado_material.pack(pady=10)
+
+#___________Socios_____________________________________________________
+etiqueta = tk.Label(ventana, text="Socios:")
 etiqueta.pack(pady=10)
 entrada = tk.Entry(ventana)
 entrada.pack(pady=5)
@@ -16,8 +32,7 @@ def mostrar_texto():
 boton = tk.Button(ventana, text="Saludar", command=mostrar_texto)
 boton.pack(pady=10)
 
+
 resultado = tk.Label(ventana, text="")
 resultado.pack(pady=10)
 ventana.mainloop()
-
-

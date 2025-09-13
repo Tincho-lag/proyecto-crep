@@ -4,3 +4,6 @@ print("Hello, GAY!")
 #Hola putita 
 #Martin Homosexual 
 # MARTIN GAY 2.0
+#Linda putita
+#Linda putita 2.0
+#Linda putita 3.0
