@@ -1,4 +1,5 @@
 
-print("Hello, World!") 
+print("Hello, GAY!") 
 # This is a sample Python file named martin_linda.py|
-#Hola putita
+#Hola putita 
+#Martin Homosexual 
