@@ -1,3 +1,5 @@
+# elemento.py 
+# posible inicio para las herencias del libro 
 from utilidades import Cola
 texto = Cola
 while True:
