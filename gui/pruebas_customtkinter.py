@@ -1,4 +1,4 @@
-# interfas.py
+# interfas.py MASCAPITO
 import customtkinter as ctk
 from PIL import Image
 
@@ -14,7 +14,7 @@ color_texto = "#333333"
 # Ventana principal
 ventana = ctk.CTk()
 ventana.title("Biblioteca Cerp del Litoral")
-ventana.geometry("900x600")
+ventana.geometry("800x500")
 ventana.resizable(False, False)
 
 # Panel lateral
@@ -26,15 +26,11 @@ marco_principal = ctk.CTkFrame(ventana, fg_color=color_fondo)
 marco_principal.pack(side="right", fill="both", expand=True, padx=20, pady=20)
 
 # Carga logo
-try:
-    logo_img = Image.open("resources/crep.jpg")
-    logo_ctk = ctk.CTkImage(light_image=logo_img, size=(50, 50))
-    logo_label = ctk.CTkLabel(panel_lateral, image=logo_ctk, text="")
-    logo_label.pack(side="bottom", pady=10)
-except Exception as e:
-    print(f"Error al cargar el logo: {e}")
-    logo_label = ctk.CTkLabel(panel_lateral, text="Logo no disponible", text_color="white")
-    logo_label.pack(side="bottom", pady=10)
+logo_img = Image.open("resources/crep.jpg")
+logo_ctk = ctk.CTkImage(light_image=logo_img, size=(50, 50))
+logo_label = ctk.CTkLabel(panel_lateral, image=logo_ctk, text="")
+logo_label.pack(side="bottom", pady=10)
+
 
 # Función para limpiar el marco
 def limpiar_marco():
@@ -46,15 +42,10 @@ def mostrar_inicio():
     limpiar_marco()
     etiqueta_titulo = ctk.CTkLabel(marco_principal, text="Biblioteca Cerp del Litoral", font=("Helvetica", 20, "bold"))
     etiqueta_titulo.pack(pady=20)
-    try:
-        imagen_inicio = Image.open("resources/crep.jpg")
-        imagen_ctk = ctk.CTkImage(light_image=imagen_inicio, size=(200, 200))
-        etiqueta_imagen = ctk.CTkLabel(marco_principal, image=imagen_ctk, text="")
-        etiqueta_imagen.pack(pady=20)
-    except Exception as e:
-        print(f"Error al cargar la imagen de inicio: {e}")
-        etiqueta_error = ctk.CTkLabel(marco_principal, text="Imagen no disponible")
-        etiqueta_error.pack(pady=20)
+    imagen_inicio = Image.open("resources/crep.jpg")
+    imagen_ctk = ctk.CTkImage(light_image=imagen_inicio, size=(200, 200))
+    etiqueta_imagen = ctk.CTkLabel(marco_principal, image=imagen_ctk, text="")
+    etiqueta_imagen.pack(pady=20)
 
 # Sección Socios
 def mostrar_socios():
