@@ -1,10 +1,9 @@
-# el mascapito marto
-
 # interfas.py
 # interfas parte del repositorio martin 
 # sabado 13 septiembre 
 import tkinter as tk
 
+# Configuración de la ventana principal
 ventana = tk.Tk()
 ventana.title("Biblioteca Cerp del Litoral")
 ventana.geometry("1280x720")

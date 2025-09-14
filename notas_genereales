@@ -1,0 +1,6 @@
+# comandos git:
+git add . 
+git commit -m "Nombrar evento o accion"
+git push origin main
+# visuales del git : pip install customtkinter(el tkinter pero pro) - 
+Pillow(visualizador imagenes)
