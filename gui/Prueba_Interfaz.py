@@ -1,56 +1,59 @@
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 
-imagen = Image.open(r"resources\ElCerp.png").resize((80, 80))
-logo = ImageTk.PhotoImage(imagen)
-tk.Label(ventana, image=logo).place(x=1150, y=10)
-
-imagen2 = Image.open(r"resources\Logo_ANEP.png").resize((130, 65))
-logo2 = ImageTk.PhotoImage(imagen2)
-tk.Label(ventana, image=logo2).place(x=10, y=10)
-
-# _____________Título_____________
-titulo = tk.Label(ventana, text="Biblioteca Cerp del Litoral", font=("Arial", 24, "bold"))
-titulo.place(x=450, y=30)
-
-#__________________Frame del formularios____________________
-form_frame = tk.Frame(ventana)
-form_frame.place(x=100, y=150)
-
-# --- Ventana principal ---
+# ------------------- Ventana principal -------------------
 ventana = tk.Tk()
 ventana.title("Biblioteca CERP del Litoral")
 ventana.geometry("1280x720")
 ventana.configure(bg="#68A1FC")
 
+# ------------------- Frame superior (para logos y título) -------------------
+top_frame = tk.Frame(ventana, bg="#68A1FC", height=100)
+top_frame.pack(side="top", fill="x")
 
+# Logo Cerp
+imagen_cerp = Image.open(r"resources\ElCerp.png").resize((80, 80))
+logo_cerp = ImageTk.PhotoImage(imagen_cerp)
+tk.Label(top_frame, image=logo_cerp, bg="#68A1FC").pack(side="right", padx=20, pady=10)
 
-# --- Frame lateral izquierdo ---
+# Logo ANEP
+imagen_anep = Image.open(r"resources\Logo_ANEP.png").resize((130, 65))
+logo_anep = ImageTk.PhotoImage(imagen_anep)
+tk.Label(top_frame, image=logo_anep, bg="#68A1FC").pack(side="left", padx=20, pady=10)
+
+# Título principal
+titulo_principal = tk.Label(
+    top_frame,
+    text="Biblioteca Cerp del Litoral",
+    font=("Arial", 24, "bold"),
+    bg="#68A1FC"
+)
+titulo_principal.pack(expand=True)
+
+# ------------------- Frame lateral izquierdo -------------------
 sidebar = tk.Frame(ventana, bg="#68A1FC", width=200)
 sidebar.pack(side="left", fill="y")
 
 # Botones del menú lateral
-btn_libros = tk.Button(sidebar, text="Libros", width=15, height=2)
-btn_libros.pack(pady=20)
+botones = ["Libros", "Préstamos", "Devoluciones", "Socios"]
+for texto in botones:
+    tk.Button(sidebar, text=texto, width=15, height=2).pack(pady=20)
 
-btn_prestamos = tk.Button(sidebar, text="Préstamos", width=15, height=2)
-btn_prestamos.pack(pady=20)
-
-btn_devoluciones = tk.Button(sidebar, text="Devoluciones", width=15, height=2)
-btn_devoluciones.pack(pady=20)
-
-btn_socios = tk.Button(sidebar, text="Socios", width=15, height=2)
-btn_socios.pack(pady=20)
-
-# --- Frame principal ---
+# ------------------- Frame principal -------------------
 main_frame = tk.Frame(ventana, bg="#FCB168")
 main_frame.pack(side="right", expand=True, fill="both")
 
-# --- Título de sección ---
-titulo = tk.Label(main_frame, text="Libros", font=("Arial", 20, "bold"), bg="white")
-titulo.pack(pady=10)
+# Título de sección
+titulo_seccion = tk.Label(
+    main_frame,
+    text="Libros",
+    font=("Arial", 20, "bold"),
+    bg="white"
+)
+titulo_seccion.pack(pady=10, fill="x")
 
-# --- Barra de búsqueda ---
+# ------------------- Barra de búsqueda -------------------
 search_frame = tk.Frame(main_frame, bg="#FCB168")
 search_frame.pack(pady=10)
 
@@ -58,35 +61,26 @@ tk.Label(search_frame, text="🔍", bg="white", font=("Arial", 14)).pack(side="l
 search_entry = tk.Entry(search_frame, width=40)
 search_entry.pack(side="left", padx=5)
 
-# --- Tabla de libros ---
+# ------------------- Tabla de libros -------------------
 tabla_frame = tk.Frame(main_frame, bg="white")
 tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
-# Definimos columnas
 columnas = ("nombre", "autor", "anio", "cantidad", "estado")
 tabla = ttk.Treeview(tabla_frame, columns=columnas, show="headings", height=15)
 
 # Encabezados
-tabla.heading("nombre", text="Nombre")
-tabla.heading("autor", text="Autor")
-tabla.heading("anio", text="Año")
-tabla.heading("cantidad", text="Cantidad")
-tabla.heading("estado", text="Disponible")
-
-# Ancho de columnas
-tabla.column("nombre", width=200)
-tabla.column("autor", width=150)
-tabla.column("anio", width=60)
-tabla.column("cantidad", width=80)
-tabla.column("estado", width=100)
+for col, ancho in zip(columnas, [200, 150, 60, 80, 100]):
+    tabla.heading(col, text=col.capitalize())
+    tabla.column(col, width=ancho)
 
 tabla.pack(fill="both", expand=True)
 
+# ------------------- Estilo de la tabla -------------------
 style = ttk.Style()
-style.theme_use("clam")  # Tema que permite personalizar
+style.theme_use("clam")
 style.configure(
     "Custom.Treeview",
-    rowheight=25,  # Alto de cada fila
+    rowheight=25,
     background="white",
     fieldbackground="white",
     bordercolor="gray",
@@ -98,8 +92,9 @@ style.map("Custom.Treeview", background=[("selected", "#D0E7FF")])
 tabla.tag_configure("disponible", foreground="green")
 tabla.tag_configure("prestado", foreground="red")
 
-# Ejemplo de filas (de prueba)
-tabla.insert("", "end", values=("El Quijote", "Cervantes", "1605", 3, "Disponible"),tags=("disponible",))
-tabla.insert("", "end", values=("1984", "George Orwell", "1949", 1, "Prestado"),tags=("prestado",))
+# Filas de ejemplo
+tabla.insert("", "end", values=("El Quijote", "Cervantes", "1605", 3, "Disponible"), tags=("disponible",))
+tabla.insert("", "end", values=("1984", "George Orwell", "1949", 1, "Prestado"), tags=("prestado",))
 
+# ------------------- Ejecutar ventana -------------------
 ventana.mainloop()
