@@ -6,7 +6,7 @@ ventana.title("Biblioteca Cerp del Litoral")
 ventana.geometry("1280x720")
 
 #___________Logo Cerp_____________________________________________________
-imagen = Image.open(r"C:\ProyectoCrep\proyecto-crep\clases\ElCerp.png")
+imagen = Image.open(r"resources\ElCerp.png")
 imagen = imagen.resize((80, 80))  
 logo = ImageTk.PhotoImage(imagen)
 
@@ -17,7 +17,7 @@ logo_label.place(x=1150, y=10)
 
 
 #_____________Logo anep____________________________________________________
-imagen2 = Image.open(r"C:\ProyectoCrep\proyecto-crep\clases\Logo_ANEP.png")
+imagen2 = Image.open(r"resources\Logo_ANEP.png")
 imagen2 = imagen2.resize((65, 130))
 logo2 = ImageTk.PhotoImage(imagen2)
 
