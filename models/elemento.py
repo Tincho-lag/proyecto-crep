@@ -9,27 +9,33 @@ class Elemento:
 # getters 
     def get_isbn(self):
         return self.__isbn
+    
     def get_titulo(self):
-        return self.__titulo        
+        return self.__titulo   
+         
     def get_autor(self):
         return self.__autor 
+    
     def get_ejemplares_disponibles(self): # getters para disponibilidad
         return self.__ejemplares_disponibles
+    
     def get_todos_los_elementos(self):
        return self._todos_los_elementos
  
 # setters (modificar disponibilidad)
-    def set_ejemplares_disponible(self, ejemplares):
-        self.__ejemplares_disponible = ejemplares 
+    def set_ejemplares_disponibles(self, ejemplares):
+        self.__ejemplares_disponibles = ejemplares 
 
 # metodos para prestar y devolver
     def prestar(self):
-        if self.__ejemplares_disponible:
+        if self.__ejemplares_disponibles > 0:
+            self.__ejemplares_disponibles -= 1
             self.__ejemplares_disponible = False
             return True
         return False   
 
     def devolver(self):
+        self.__ejemplares_disponibles += 1
         self.__disponible = True
 
 # clase libro que hereda de elemento
@@ -41,6 +47,7 @@ class Libro(Elemento):
     def año_publicacion(self):
         return self.año_publicacion
     
- # Sobreescribe representación
+ # representacion del objeto
     def __str__(self):
-        return f"Libro: {self.get_titulo()} por {self.get_autor()} (ISBN: {self.get_isbn()}, Año: {self._año_publicacion}, Disponibles: {self.get_ejemplares_disponibles()})"
+        return f"{self.__titulo} por {self.__autor} (ISBN: {self.__isbn}, Disponibles: {self.__ejemplares_disponibles})"
+

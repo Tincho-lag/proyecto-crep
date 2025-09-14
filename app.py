@@ -8,7 +8,6 @@ libro3 = Libro("978-0061120084", "Matar un ruiseñor", "Harper Lee", 1960, 1)
 print("=== PRUEBA DE LA CLASE  Libro ===")
 print(f"Libro creado: {libro1}")
 print(f"Libro creado: {libro2}")
-print(f"Libro creado: {libro3}")    
 
     # Probar préstamo
 print(f"¿Se puede prestar? {libro1.prestar()}")
