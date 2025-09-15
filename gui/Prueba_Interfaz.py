@@ -1,117 +1,72 @@
 import tkinter as tk
-from tkinter import ttk
 from PIL import Image, ImageTk
-from registro_socios import ventana_registro
+from registro_socios import mostrar_registro
 
+def mostrar_socios():
+    mostrar_registro(main_frame)
 
-# ------------------- Ventana principal -------------------
+def mostrar_libros():
+    limpiar_main()
+    tk.Label(main_frame, text="Gestión de Libros", font=("Arial", 16)).pack(pady=20)
+
+def mostrar_prestamos():
+    limpiar_main()
+    tk.Label(main_frame, text="Gestión de Préstamos", font=("Arial", 16)).pack(pady=20)
+
+def mostrar_devoluciones():
+    limpiar_main()
+    tk.Label(main_frame, text="Gestión de Devoluciones", font=("Arial", 16)).pack(pady=20)
+
+def limpiar_main():
+    for widget in main_frame.winfo_children():
+        widget.destroy()
+
+# -----------------------------
+# Ventana principal
+# -----------------------------
 ventana = tk.Tk()
 ventana.title("Biblioteca CERP del Litoral")
-ventana.geometry("1280x720")
-ventana.configure(bg="#FAFAFA")
+ventana.geometry("1000x600")
 
-# ------------------- Frame superior (para logos y título) -------------------
-top_frame = tk.Frame(ventana, bg="#FAFAFA", height=100)
+# -----------------------------
+# Frame superior (logo + título)
+# -----------------------------
+top_frame = tk.Frame(ventana, bg="#FFD39E", height=80)
 top_frame.pack(side="top", fill="x")
 
 # Logo Cerp
-imagen_cerp = Image.open(r"resources\ElCerp.png").resize((80, 80))
-logo_cerp = ImageTk.PhotoImage(imagen_cerp)
-tk.Label(top_frame, image=logo_cerp, bg="#FAFAFA").pack(side="right", padx=20, pady=10)
+imagen = Image.open(r"resources\ElCerp.png").resize((80, 80))
+logo_cerp = ImageTk.PhotoImage(imagen)
+logo_label = tk.Label(top_frame, image=logo_cerp, bg="#FFD39E")
+logo_label.pack(side="left", padx=25, pady=10)
 
-# Logo ANEP
-imagen_anep = Image.open(r"resources\Logo_ANEP.png").resize((130, 65))
+# Título
+titulo = tk.Label(top_frame, text="Biblioteca CERP del Litoral", font=("Arial", 20, "bold"), bg="#FFD39E")
+titulo.pack(pady=10, anchor="center")
+
+# -----------------------------
+# Menú lateral
+# -----------------------------
+sidebar = tk.Frame(ventana, width=200, bg="#FFD39E")
+sidebar.pack(side="left", fill="y")
+
+tk.Label(sidebar, text="Menú", bg="#FFD39E", font=("Arial", 14, "bold")).pack(pady=10)
+
+tk.Button(sidebar, text="Socios", width=15, height=2, command=mostrar_socios).pack(pady=10)
+tk.Button(sidebar, text="Libros", width=15, height=2, command=mostrar_libros).pack(pady=10)
+tk.Button(sidebar, text="Préstamos", width=15, height=2, command=mostrar_prestamos).pack(pady=10)
+tk.Button(sidebar, text="Devoluciones", width=15, height=2, command=mostrar_devoluciones).pack(pady=10)
+
+# Logo ANEP (abajo a la izquierda)
+imagen_anep = Image.open(r"resources\Logo_ANEP.png").resize((135, 65))
 logo_anep = ImageTk.PhotoImage(imagen_anep)
-tk.Label(top_frame, image=logo_anep, bg="#FAFAFA").pack(side="left", padx=20, pady=10)
+logo_anep_label = tk.Label(sidebar, image=logo_anep, bg="#FFD39E")
+logo_anep_label.pack(side="bottom", pady=20)
 
-# Título principal
-titulo_principal = tk.Label(
-    top_frame,
-    text="Biblioteca Cerp del Litoral",
-    font=("Arial", 24, "bold"),
-    bg="#FAFAFA"
-)
-titulo_principal.pack(expand=True)
+# -----------------------------
+# Área principal
+# -----------------------------
+main_frame = tk.Frame(ventana, bg="white")
+main_frame.pack(side="right", fill="both", expand=True)
 
-# ------------------- Frame Donde estan los botones-------------------
-Frameboton = tk.Frame(ventana, bg="#A0A0A0", width=200)
-Frameboton.pack(side="left", fill="y")
-
-# ------------------- botones -------------------
-def mostrar_libros():
-    titulo_seccion.config(text="Libros")
-
-def mostrar_prestamos():
-    titulo_seccion.config(text="Préstamos")
-
-def mostrar_devoluciones():
-    titulo_seccion.config(text="Devoluciones")
-
-def mostrar_socios():
-    titulo_seccion.config(text="Socios")
-    ventana_registro()
-
-# ------------------- Botones del menú lateral -------------------
-tk.Button(Frameboton, text="Libros", width=15, height=2, command=mostrar_libros).pack(pady=20)
-tk.Button(Frameboton, text="Préstamos", width=15, height=2, command=mostrar_prestamos).pack(pady=20)
-tk.Button(Frameboton, text="Devoluciones", width=15, height=2, command=mostrar_devoluciones).pack(pady=20)
-tk.Button(Frameboton, text="Socios", width=15, height=2, command=mostrar_socios).pack(pady=20)
-
-# ------------------- Frame principal -------------------
-main_frame = tk.Frame(ventana, bg="#ECECEC")
-main_frame.pack(side="right", expand=True, fill="both")
-
-# Título de sección
-titulo_seccion = tk.Label(
-    main_frame,
-    text="Libros",
-    font=("Arial", 20, "bold"),
-    bg="white"
-)
-titulo_seccion.pack(pady=10, fill="x")
-
-# ------------------- Barra de búsqueda -------------------
-search_frame = tk.Frame(main_frame, bg="#B0B0B0")
-search_frame.pack(pady=10)
-
-tk.Label(search_frame, text="🔍", bg="#A0A0A0", font=("Arial", 14)).pack(side="left", padx=5)
-search_entry = tk.Entry(search_frame, width=40)
-search_entry.pack(side="left", padx=5)
-
-# ------------------- Tabla de libros -------------------
-tabla_frame = tk.Frame(main_frame, bg="white")
-tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
-
-columnas = ("nombre", "autor", "año", "cantidad", "estado")
-tabla = ttk.Treeview(tabla_frame, columns=columnas, show="headings", height=15)
-
-# Encabezados
-for col, ancho in zip(columnas, [200, 150, 60, 80, 100]):
-    tabla.heading(col, text=col.capitalize())
-    tabla.column(col, width=ancho)
-
-tabla.pack(fill="both", expand=True)
-
-# ------------------- Estilo de la tabla -------------------
-style = ttk.Style()
-style.theme_use("clam")
-style.configure(
-    "Custom.Treeview",
-    rowheight=25,
-    background="white",
-    fieldbackground="white",
-    bordercolor="gray",
-    borderwidth=1
-)
-style.configure("Custom.Treeview.Heading", font=("Arial", 11, "bold"))
-style.map("Custom.Treeview", background=[("selected", "#D0E7FF")])
-
-tabla.tag_configure("disponible", foreground="green")
-tabla.tag_configure("prestado", foreground="red")
-
-# Filas de ejemplo
-tabla.insert("", "end", values=("El Quijote", "Cervantes", "1605", 3, "Disponible"), tags=("disponible",))
-tabla.insert("", "end", values=("1984", "George Orwell", "1949", 1, "Prestado"), tags=("prestado",))
-
-# ------------------- Ejecutar ventana -------------------
 ventana.mainloop()
