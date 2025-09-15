@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from registro_socios import ventana_registro
+
 
 # ------------------- Ventana principal -------------------
 ventana = tk.Tk()
@@ -31,14 +33,29 @@ titulo_principal = tk.Label(
 )
 titulo_principal.pack(expand=True)
 
-# ------------------- Frame lateral izquierdo -------------------
-sidebar = tk.Frame(ventana, bg="#A0A0A0", width=200)
-sidebar.pack(side="left", fill="y")
+# ------------------- Frame Donde estan los botones-------------------
+Frameboton = tk.Frame(ventana, bg="#A0A0A0", width=200)
+Frameboton.pack(side="left", fill="y")
 
-# Botones del menú lateral
-botones = ["Libros", "Préstamos", "Devoluciones", "Socios"]
-for texto in botones:
-    tk.Button(sidebar, text=texto, width=15, height=2).pack(pady=20)
+# ------------------- botones -------------------
+def mostrar_libros():
+    titulo_seccion.config(text="Libros")
+
+def mostrar_prestamos():
+    titulo_seccion.config(text="Préstamos")
+
+def mostrar_devoluciones():
+    titulo_seccion.config(text="Devoluciones")
+
+def mostrar_socios():
+    titulo_seccion.config(text="Socios")
+    ventana_registro()
+
+# ------------------- Botones del menú lateral -------------------
+tk.Button(Frameboton, text="Libros", width=15, height=2, command=mostrar_libros).pack(pady=20)
+tk.Button(Frameboton, text="Préstamos", width=15, height=2, command=mostrar_prestamos).pack(pady=20)
+tk.Button(Frameboton, text="Devoluciones", width=15, height=2, command=mostrar_devoluciones).pack(pady=20)
+tk.Button(Frameboton, text="Socios", width=15, height=2, command=mostrar_socios).pack(pady=20)
 
 # ------------------- Frame principal -------------------
 main_frame = tk.Frame(ventana, bg="#ECECEC")
