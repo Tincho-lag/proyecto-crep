@@ -1,3 +1,4 @@
+# interfas.py
 """ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import ttk

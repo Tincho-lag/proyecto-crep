@@ -4,3 +4,8 @@ git commit -m "Nombrar evento o accion"
 git push origin main
 # visuales del git : pip install customtkinter(el tkinter pero pro) - 
 Pillow(visualizador imagenes)
+#linux (adrian) si necesito descargar mas librebrias
+python3 -m venv venv
+# crear entorno virtual para no romper visual
+source venv/bin/activate
+pip install nombre_libreria
