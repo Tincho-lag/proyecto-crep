@@ -5,7 +5,7 @@ class Elemento:
         self.__isbn = isbn
         self.__titulo = titulo
         self.__autor = autor
-        self.__ejemplares_disponible = ejemplares  # Estado de disponibilidad Boleano
+        self.__ejemplares_disponibles = ejemplares  # Estado de disponibilidad Boleano
 # getters 
     def get_isbn(self):
         return self.__isbn
@@ -18,9 +18,6 @@ class Elemento:
     
     def get_ejemplares_disponibles(self): # getters para disponibilidad
         return self.__ejemplares_disponibles
-    
-    def get_todos_los_elementos(self):
-       return self._todos_los_elementos
  
 # setters (modificar disponibilidad)
     def set_ejemplares_disponibles(self, ejemplares):
@@ -30,24 +27,25 @@ class Elemento:
     def prestar(self):
         if self.__ejemplares_disponibles > 0:
             self.__ejemplares_disponibles -= 1
-            self.__ejemplares_disponible = False
             return True
         return False   
 
     def devolver(self):
         self.__ejemplares_disponibles += 1
-        self.__disponible = True
 
 # clase libro que hereda de elemento
 class Libro(Elemento):
     def __init__(self, isbn, titulo, autor, año_publicacion,ejemplares =1 ):
-        super().__init__(isbn, titulo, autor, ejemplares =1 )
-        self._año_publicacion = año_publicacion
+        super().__init__(isbn, titulo, autor, ejemplares)
+        self.__año_publicacion = año_publicacion
 
-    def año_publicacion(self):
-        return self.año_publicacion
+    def get_año_publicacion(self):
+        return self.__año_publicacion
     
  # representacion del objeto
+    
     def __str__(self):
-        return f"{self.__titulo} por {self.__autor} (ISBN: {self.__isbn}, Disponibles: {self.__ejemplares_disponibles})"
+                return f"{self.get_titulo()} por {self.get_autor()}, ISBN: {self.get_isbn()}, Año: {self.get_año_publicacion()}, Disponibles: {self.get_ejemplares_disponibles()}"
+
+        # Usamos los getters para acceder a los atributos de la clase base
 
