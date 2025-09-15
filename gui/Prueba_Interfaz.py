@@ -6,33 +6,33 @@ from PIL import Image, ImageTk
 ventana = tk.Tk()
 ventana.title("Biblioteca CERP del Litoral")
 ventana.geometry("1280x720")
-ventana.configure(bg="#68A1FC")
+ventana.configure(bg="#FAFAFA")
 
 # ------------------- Frame superior (para logos y título) -------------------
-top_frame = tk.Frame(ventana, bg="#68A1FC", height=100)
+top_frame = tk.Frame(ventana, bg="#FAFAFA", height=100)
 top_frame.pack(side="top", fill="x")
 
 # Logo Cerp
 imagen_cerp = Image.open(r"resources\ElCerp.png").resize((80, 80))
 logo_cerp = ImageTk.PhotoImage(imagen_cerp)
-tk.Label(top_frame, image=logo_cerp, bg="#68A1FC").pack(side="right", padx=20, pady=10)
+tk.Label(top_frame, image=logo_cerp, bg="#FAFAFA").pack(side="right", padx=20, pady=10)
 
 # Logo ANEP
 imagen_anep = Image.open(r"resources\Logo_ANEP.png").resize((130, 65))
 logo_anep = ImageTk.PhotoImage(imagen_anep)
-tk.Label(top_frame, image=logo_anep, bg="#68A1FC").pack(side="left", padx=20, pady=10)
+tk.Label(top_frame, image=logo_anep, bg="#FAFAFA").pack(side="left", padx=20, pady=10)
 
 # Título principal
 titulo_principal = tk.Label(
     top_frame,
     text="Biblioteca Cerp del Litoral",
     font=("Arial", 24, "bold"),
-    bg="#68A1FC"
+    bg="#FAFAFA"
 )
 titulo_principal.pack(expand=True)
 
 # ------------------- Frame lateral izquierdo -------------------
-sidebar = tk.Frame(ventana, bg="#68A1FC", width=200)
+sidebar = tk.Frame(ventana, bg="#A0A0A0", width=200)
 sidebar.pack(side="left", fill="y")
 
 # Botones del menú lateral
@@ -41,7 +41,7 @@ for texto in botones:
     tk.Button(sidebar, text=texto, width=15, height=2).pack(pady=20)
 
 # ------------------- Frame principal -------------------
-main_frame = tk.Frame(ventana, bg="#FCB168")
+main_frame = tk.Frame(ventana, bg="#ECECEC")
 main_frame.pack(side="right", expand=True, fill="both")
 
 # Título de sección
@@ -54,10 +54,10 @@ titulo_seccion = tk.Label(
 titulo_seccion.pack(pady=10, fill="x")
 
 # ------------------- Barra de búsqueda -------------------
-search_frame = tk.Frame(main_frame, bg="#FCB168")
+search_frame = tk.Frame(main_frame, bg="#B0B0B0")
 search_frame.pack(pady=10)
 
-tk.Label(search_frame, text="🔍", bg="white", font=("Arial", 14)).pack(side="left", padx=5)
+tk.Label(search_frame, text="🔍", bg="#A0A0A0", font=("Arial", 14)).pack(side="left", padx=5)
 search_entry = tk.Entry(search_frame, width=40)
 search_entry.pack(side="left", padx=5)
 
@@ -65,7 +65,7 @@ search_entry.pack(side="left", padx=5)
 tabla_frame = tk.Frame(main_frame, bg="white")
 tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
-columnas = ("nombre", "autor", "anio", "cantidad", "estado")
+columnas = ("nombre", "autor", "año", "cantidad", "estado")
 tabla = ttk.Treeview(tabla_frame, columns=columnas, show="headings", height=15)
 
 # Encabezados
