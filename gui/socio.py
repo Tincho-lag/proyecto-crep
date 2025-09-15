@@ -1,4 +1,3 @@
-# socio.py
 import os
 
 class Socio:
@@ -11,7 +10,6 @@ class Socio:
     def to_line(self):
         return f"{self.tipo},{self.nombre},{self.ci},{self.correo}\n"
 
-
 class Estudiante(Socio):
     def __init__(self, nombre, ci, correo, carrera):
         super().__init__(nombre, ci, correo)
@@ -21,7 +19,6 @@ class Estudiante(Socio):
     def to_line(self):
         return f"{self.tipo},{self.nombre},{self.ci},{self.correo},{self.carrera}\n"
 
-
 class Profesor(Socio):
     def __init__(self, nombre, ci, correo, materia):
         super().__init__(nombre, ci, correo)
@@ -30,7 +27,6 @@ class Profesor(Socio):
 
     def to_line(self):
         return f"{self.tipo},{self.nombre},{self.ci},{self.correo},{self.materia}\n"
-
 
 class GestorSocios:
     ARCHIVO = "socios.txt"
