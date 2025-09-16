@@ -9,58 +9,61 @@ def mostrar_registro(main_frame):
     for widget in main_frame.winfo_children():
         widget.destroy()
 
-    # Frame contenedor con color de fondo
-    frame = tk.Frame(main_frame, bg="#e6f2ff")  # 💡 color celeste claro
+    # Frame contenedor
+    frame = tk.Frame(main_frame, bg="#e6f2ff")  
     frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-    # Tipo de socio
+    # ------------------ Formulario ------------------
     tk.Label(frame, text="Tipo de Socio:", font=("Arial", 12), bg="#e6f2ff").pack(pady=5)
 
-    # 🔹 StringVar con master=frame para evitar errores
     tipo_var = tk.StringVar(master=frame, value="Estudiante")
-
-    combo_tipo = ttk.Combobox(
-        frame, textvariable=tipo_var, values=["Estudiante", "Profesor"], state="readonly"
-    )
+    combo_tipo = ttk.Combobox(frame, textvariable=tipo_var, values=["Estudiante", "Profesor"], state="readonly")
     combo_tipo.pack()
 
-    # Nombre
     tk.Label(frame, text="Nombre:", bg="#e6f2ff").pack(pady=5)
     entry_nombre = tk.Entry(frame)
     entry_nombre.pack()
 
-    # Cédula
     tk.Label(frame, text="Cédula:", bg="#e6f2ff").pack(pady=5)
-    entry_ci = tk.Entry(frame)
+    # 🔹 Validación para solo números
+    vcmd = (frame.register(lambda P: P.isdigit() or P == ""), "%P")
+    entry_ci = tk.Entry(frame, validate="key", validatecommand=vcmd)
     entry_ci.pack()
 
-    # Correo
     tk.Label(frame, text="Correo:", bg="#e6f2ff").pack(pady=5)
     entry_correo = tk.Entry(frame)
     entry_correo.pack()
 
-    # Carrera/Materia
     extra_label = tk.Label(frame, text="Carrera:", bg="#e6f2ff")
     extra_label.pack(pady=5)
     entry_extra = tk.Entry(frame)
     entry_extra.pack()
 
     def actualizar_extra(event):
-        if tipo_var.get() == "Estudiante":
-            extra_label.config(text="Carrera:")
-        else:
-            extra_label.config(text="Materia:")
+        extra_label.config(text="Carrera:" if tipo_var.get() == "Estudiante" else "Materia:")
 
     combo_tipo.bind("<<ComboboxSelected>>", actualizar_extra)
 
     gestor = GestorSocios()
 
-    # Botón para registrar socio
+    # ------------------ Tabla de socios ------------------
+    tabla = ttk.Treeview(frame, columns=("tipo", "nombre", "ci", "correo", "extra"), show="headings", height=6)
+    tabla.pack(pady=15, fill="x")
+
+    for col in ("tipo", "nombre", "ci", "correo", "extra"):
+        tabla.heading(col, text=col.capitalize())
+        tabla.column(col, width=100)
+
+    # Cargar socios existentes al iniciar
+    for s in gestor.leer_todos():
+        tabla.insert("", "end", values=s)
+
+    # ------------------ Funciones ------------------
     def registrar():
-        nombre = entry_nombre.get()
-        ci = entry_ci.get()
-        correo = entry_correo.get()
-        extra = entry_extra.get()
+        nombre = entry_nombre.get().strip()
+        ci = entry_ci.get().strip()
+        correo = entry_correo.get().strip()
+        extra = entry_extra.get().strip()
         tipo = tipo_var.get()
 
         if not nombre or not ci or not correo or not extra:
@@ -74,19 +77,16 @@ def mostrar_registro(main_frame):
                 socio = Profesor(nombre, ci, correo, extra)
 
             gestor.guardar(socio)
+            tabla.insert("", "end", values=socio.to_line().strip().split(","))
             messagebox.showinfo("Éxito", f"{tipo} registrado correctamente")
+
+            # Limpiar entradas
+            entry_nombre.delete(0, tk.END)
+            entry_ci.delete(0, tk.END)
+            entry_correo.delete(0, tk.END)
+            entry_extra.delete(0, tk.END)
+
         except ValueError as e:
             messagebox.showerror("Error", str(e))
 
     tk.Button(frame, text="Registrar", command=registrar).pack(pady=10)
-
-    # Botón para ver todos los socios
-    def ver_socios():
-        socios = gestor.leer_todos()
-        if not socios:
-            messagebox.showinfo("Socios", "No hay socios registrados aún.")
-        else:
-            listado = "\n".join([", ".join(s) for s in socios])
-            messagebox.showinfo("Socios registrados", listado)
-
-    tk.Button(frame, text="Ver socios", command=ver_socios).pack(pady=5)
