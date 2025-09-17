@@ -14,7 +14,11 @@ def generar_id_simple(archivo="socios.txt"):
     except FileNotFoundError:
         return "001"
 
-# --- Clases ---
+#________________________________Clases de Registro y gestor de socios_____________________________________
+#__________________________Gestor de Socios, donde se guarda todos los  datos de los socios
+# En las clases socio, estudiante y profesor, representan los diferentes tipos de socios y sus datos
+#   Cada clase tiene un metodo -"to_line()"- convierte los datos de los socios en una línea de texto para guardarlos en un archivo.
+# _____________________________________
 class Socio:
     def __init__(self, id, nombre, ci, correo, domicilio, observaciones):
         self.id = id
@@ -45,17 +49,28 @@ class Profesor(Socio):
 
     def to_line(self):
         return f"{self.tipo},{self.id},{self.nombre},{self.ci},{self.correo},{self.materia},{self.domicilio},{self.observaciones}\n"
-
+    
+    
+#______________________________________La clase GestorSocios se encarga de guardar esos datos en un archivo (socios.txt) para luego leerlos.
 class GestorSocios:
     def __init__(self, archivo="socios.txt"):
         self.archivo = archivo
-
+        
+#__________________El metodo  "guardar()" abre el archivo en modo append y escribe la línea.______________________________
     def guardar(self, socio):
-        with open(self.archivo, "a", encoding="utf-8") as f:
-            f.write(socio.to_line())
+        
+#______________________________________________Esta linea  "with open(...) as i:" y la asocia con la variable "i" 
+# Python usa modos de archivo de una letra para que sea más corto y simple ("a" → append (agregar al final)).
+# Si pusieras "append", Python no lo entendería porque solo reconoce las letras definidas.
+# esto hace que el socio no se sobrescriba y vaya al siguiente____________________
+        with open(self.archivo, "a", encoding="utf-8") as i:
+            
+#___________escribe la línea de texto del socio en el archivo.
+            i.write(socio.to_line())
 
+#__________________El metodo "leer_todos()" abre el archivo en modo lectura y lee todas las líneas, devolviendo una lista de listas.________________
     def leer_todos(self):
         if not os.path.exists(self.archivo):
             return []
-        with open(self.archivo, "r", encoding="utf-8") as f:
-            return [line.strip().split("-") for line in f.readlines()]
+        with open(self.archivo, "r", encoding="utf-8") as i:
+            return [line.strip().split("-") for line in i.readlines()]
