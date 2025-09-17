@@ -1,6 +1,1 @@
-Estudiante,Martin Branca,123456,martin@gmail.com,Informática
-Profesor,Adrian Soria,1245677,Putito@gmail.com,Sexologia
-Profesor,Juancito,Pereira,Juanci@gmail.com,Matematica
-Profesor,juancito,1234567,juanci@gmail.com,Matematica
-Estudiante,José,8978122,josecito123@gmail.com,Historia
-Profesor,Bruno,87436587,otaku@gmail.com,Biologia
+Profesor,001,Jesefina Antunes,123456,Josefa@gmail.com,Quimica,Solari 123,Siempre devuelve tarde los cables HDMI

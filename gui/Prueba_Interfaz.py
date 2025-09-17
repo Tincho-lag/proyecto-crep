@@ -21,32 +21,32 @@ def limpiar_main():
     for widget in main_frame.winfo_children():
         widget.destroy()
 
-# -----------------------------
-# Ventana principal
-# -----------------------------
+
+#__________________Ventana tkinter___________________________
+
 ventana = tk.Tk()
 ventana.title("Biblioteca CERP del Litoral")
-ventana.geometry("1000x600")
+ventana.geometry("1280x720")
 
-# -----------------------------
-# Frame superior (logo + título)
-# -----------------------------
+#_______________________Frame superior de contiene el logo del cerp y titulo__________________________________________________________
 top_frame = tk.Frame(ventana, bg="#FFD39E", height=80)
 top_frame.pack(side="top", fill="x")
 
-# Logo Cerp
+
+#_______________________Logo Cerp-arriba a la izquierda-_________________________________________________
+
 imagen = Image.open(r"resources\ElCerp.png").resize((80, 80))
 logo_cerp = ImageTk.PhotoImage(imagen)
 logo_label = tk.Label(top_frame, image=logo_cerp, bg="#FFD39E")
 logo_label.pack(side="left", padx=25, pady=10)
 
-# Título
+#_______________________________________Título__________________________________________________________
 titulo = tk.Label(top_frame, text="Biblioteca CERP del Litoral", font=("Arial", 20, "bold"), bg="#FFD39E")
 titulo.pack(pady=10, anchor="center")
 
-# -----------------------------
-# Menú lateral
-# -----------------------------
+
+#______Frama donde lateral donde contiene los botones_______________________________________________________
+
 sidebar = tk.Frame(ventana, width=200, bg="#FFD39E")
 sidebar.pack(side="left", fill="y")
 
@@ -57,15 +57,17 @@ tk.Button(sidebar, text="Libros", width=15, height=2, command=mostrar_libros).pa
 tk.Button(sidebar, text="Préstamos", width=15, height=2, command=mostrar_prestamos).pack(pady=10)
 tk.Button(sidebar, text="Devoluciones", width=15, height=2, command=mostrar_devoluciones).pack(pady=10)
 
-# Logo ANEP (abajo a la izquierda)
+
+#_______________________Logo ANEP-abajo a la izquierda-_____________________________________________________________
+
 imagen_anep = Image.open(r"resources\Logo_ANEP.png").resize((135, 65))
 logo_anep = ImageTk.PhotoImage(imagen_anep)
 logo_anep_label = tk.Label(sidebar, image=logo_anep, bg="#FFD39E")
 logo_anep_label.pack(side="bottom", pady=20)
 
-# -----------------------------
-# Área principal
-# -----------------------------
+
+#______________________Este es el frame principal donde se muestran los contenidos de los botos______________________
+
 main_frame = tk.Frame(ventana, bg="white")
 main_frame.pack(side="right", fill="both", expand=True)
 
