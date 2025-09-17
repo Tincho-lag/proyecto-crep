@@ -70,7 +70,13 @@ class GestorSocios:
 
 #__________________El metodo "leer_todos()" abre el archivo en modo lectura y lee todas las líneas, devolviendo una lista de listas.________________
     def leer_todos(self):
+#______________Verifica si el archivo existe. Si no existe, devuelve una lista vacía ([]) para evitar errores.___________________
         if not os.path.exists(self.archivo):
             return []
+        
+#_________________________Abre el archivo en modo lectura ("r")
         with open(self.archivo, "r", encoding="utf-8") as i:
+#______El -line.strip()- elimina espacios en blanco y saltos de línea al inicio y final de cada línea.
+#______El -line.split("-")- divide cada dato de los socios en una lista separada por un guieon(-).
+#El -i.readlines()- lee todas las líneas del archivo en una lista.
             return [line.strip().split("-") for line in i.readlines()]
