@@ -19,7 +19,6 @@ class Socio:
     def __init__(self, id, nombre, ci, correo, domicilio, observaciones):
         if not ci.isdigit():
             raise ValueError("La cédula debe contener solo números")
-
         self.id = id
         self.nombre = nombre
         self.ci = ci
