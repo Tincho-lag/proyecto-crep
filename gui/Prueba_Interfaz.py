@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from registro_socios import mostrar_registro
+from tests.registro_socios import mostrar_registro
 
 def mostrar_socios():
     mostrar_registro(main_frame)
