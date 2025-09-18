@@ -1,1 +1,4 @@
 Profesor,001,Jesefina Antunes,123456,Josefa@gmail.com,Quimica,Solari 123,Siempre devuelve tarde los cables HDMI
+,Estudiante,martin,123456,martin@gmail.com,quimica,edfwsef 1234,erftgfdg
+,Estudiante,qwerty,123456,mgfdxfghn@gmail.com,matematica,Bolivia 123,matgfg
+001,Estudiante,Andrea zapata,987654,Andreita@gmail.com,Astrologia,Bolivia 98,wwww

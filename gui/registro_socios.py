@@ -41,7 +41,7 @@ def mostrar_registro(main_frame):
     entry_obs.grid(row=len(labels)+1, column=1, sticky="w", pady=2)
 
     # --- TABLA ---
-    cols = ("ID", "Tipo", "Nombre", "CI", "Correo", "Extra", "Domicilio", "Observaciones")
+    cols = ("ID", "Tipo de socio", "Nombre", "CI", "Correo", "Extra", "Domicilio", "Observaciones")
     tabla = ttk.Treeview(frame, columns=cols, show="headings", height=8)
     tabla.pack(fill="both", expand=True, pady=10)
 
