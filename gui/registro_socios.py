@@ -25,7 +25,7 @@ def mostrar_registro(main_frame):
     combo_tipo.grid(row=0, column=1, sticky="w", pady=2)
 
     # Campos de texto
-    labels = ["ID:", "Nombre:", "Cédula:", "Correo:", "Carrera/Materia:", "Domicilio:"]
+    labels = ["ID:", "Nombre y Apellido:", "Cédula:", "Correo:", "Área:", "Domicilio:"]
     for i, label in enumerate(labels, start=1):
         tk.Label(form_frame, text=label, bg="#e6f2ff").grid(row=i, column=0, sticky="e", pady=2)
         entry = tk.Entry(form_frame, width=40)
@@ -41,7 +41,7 @@ def mostrar_registro(main_frame):
     entry_obs.grid(row=len(labels)+1, column=1, sticky="w", pady=2)
 
     # --- TABLA ---
-    cols = ("ID", "Tipo", "Nombre", "CI", "Correo", "Extra", "Domicilio", "Observaciones")
+    cols = ("ID", "Tipo de socio", "Nombre y Apellido", "CI", "Correo", "Área", "Domicilio", "Observaciones")
     tabla = ttk.Treeview(frame, columns=cols, show="headings", height=8)
     tabla.pack(fill="both", expand=True, pady=10)
 

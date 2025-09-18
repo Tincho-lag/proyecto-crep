@@ -14,8 +14,8 @@ def generar_id_simple(archivo="socios.txt"):
                 return "001"  
 #__________________Estas lineas  (lineas[-1]) = toma la última línea del archivo, es decir, el último socio registrado.
 #________________________________(.strip()) = elimina espacios o saltos de línea al inicio o al final.
-#________________________________(.split("-")) = divide la línea en partes separadas por guiones, generando una lista
-            ultimo = lineas[-1].strip().split("-")[1]  
+#________________________________(.split("-")) = divide la línea en partes separadas por comas, generando una lista
+            ultimo = lineas[-1].strip().split(",")[1]  
          #___Convierte el último ID a un número entero con int() y le suma 1 para generar el siguiente ID en secuencia.
             nuevo_id = int(ultimo) + 1
         #___Convierte el nuevo ID de vuelta a cadena con str() y el (.zfill(3) = asegura que tenga 3 dígitos
@@ -40,7 +40,7 @@ class Socio:
         self.tipo = "General"
 
     def to_line(self):
-        return f"{self.tipo},{self.id},{self.nombre},{self.ci},{self.correo},{self.domicilio},{self.observaciones}\n"
+        return f"{self.id},{self.tipo},{self.nombre},{self.ci},{self.correo},{self.domicilio},{self.observaciones}\n"
 
 class Estudiante(Socio):
     def __init__(self, id, nombre, ci, correo, carrera, domicilio, observaciones):
@@ -49,7 +49,7 @@ class Estudiante(Socio):
         self.tipo = "Estudiante"
 
     def to_line(self):
-        return f"{self.tipo},{self.id},{self.nombre},{self.ci},{self.correo},{self.carrera},{self.domicilio},{self.observaciones}\n"
+        return f"{self.id},{self.tipo},{self.nombre},{self.ci},{self.correo},{self.carrera},{self.domicilio},{self.observaciones}\n"
 
 class Profesor(Socio):
     def __init__(self, id, nombre, ci, correo, materia, domicilio, observaciones):
@@ -58,7 +58,7 @@ class Profesor(Socio):
         self.tipo = "Profesor"
 
     def to_line(self):
-        return f"{self.tipo},{self.id},{self.nombre},{self.ci},{self.correo},{self.materia},{self.domicilio},{self.observaciones}\n"
+        return f"{self.id},{self.tipo},{self.nombre},{self.ci},{self.correo},{self.materia},{self.domicilio},{self.observaciones}\n"
     
     
 #______________________________________La clase GestorSocios se encarga de guardar esos datos en un archivo (socios.txt) para luego leerlos.
@@ -87,6 +87,6 @@ class GestorSocios:
 #_________________________Abre el archivo en modo lectura ("r")
         with open(self.archivo, "r", encoding="utf-8") as i:
 #______El -line.strip()- elimina espacios en blanco y saltos de línea al inicio y final de cada línea.
-#______El -line.split("-")- divide cada dato de los socios en una lista separada por un guieon(-).
+#______El -line.split("-")- divide cada dato de los socios en una lista separada por un guieon(,).
 #El -i.readlines()- lee todas las líneas del archivo en una lista.
-            return [line.strip().split("-") for line in i.readlines()]
+            return [line.strip().split(",") for line in i.readlines()]
