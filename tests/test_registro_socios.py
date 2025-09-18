@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from socio import Estudiante, Profesor, GestorSocios, generar_id_simple
+from tests.test_socio import Estudiante, Profesor, GestorSocios, generar_id_simple
 
 def mostrar_registro(main_frame):
     # Limpiar pantalla
