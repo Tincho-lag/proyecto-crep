@@ -1,16 +1,26 @@
 import os
 
-# --- Generar ID automático ---
+ #_____Aca difinimos la funcion  generar_id_simple______(archivo="socios.txt") es decirle a la función dónde buscar los IDs existentes para poder calcular el siguiente.
 def generar_id_simple(archivo="socios.txt"):
-    """Genera un ID automático secuencial (001, 002, 003, ...)"""
+#____Esto sirve para prevenir errores: el código dentro del try se intenta ejecutar normalmente, y si ocurre un error, se salta al bloque except
     try:
+#____ Esto es pra que el usuario no tenga que crear el ID manualmente, si no existe, se crea automaticamente
         with open(archivo, "r", encoding="utf-8") as f:
-            lineas = f.readlines()
+#______Lee todas las líneas del archivo y las guarda en la lista lineas, cada elemento de la lista es una línea del archivo, normalmente con información de un socio, como "nombre,ID,correo"
+            lineas = f.readlines()  
+            
+#______Verifica si esta vacío y si el archivo está vacío (no hay datos), devuelve "001" como el primer ID.
             if not lineas:
-                return "001"  # Primer socio
-            ultimo = lineas[-1].strip().split(",")[1]  # El ID está en la posición 1
+                return "001"  
+#__________________Estas lineas  (lineas[-1]) = toma la última línea del archivo, es decir, el último socio registrado.
+#________________________________(.strip()) = elimina espacios o saltos de línea al inicio o al final.
+#________________________________(.split("-")) = divide la línea en partes separadas por guiones, generando una lista
+            ultimo = lineas[-1].strip().split("-")[1]  
+         #___Convierte el último ID a un número entero con int() y le suma 1 para generar el siguiente ID en secuencia.
             nuevo_id = int(ultimo) + 1
+        #___Convierte el nuevo ID de vuelta a cadena con str() y el (.zfill(3) = asegura que tenga 3 dígitos
             return str(nuevo_id).zfill(3)
+    #____ Si el archivo no existe, devuelve "001" como el primer ID.
     except FileNotFoundError:
         return "001"
 
