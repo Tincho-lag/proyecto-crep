@@ -1,20 +1,37 @@
 # elemento.py 
-# posible inicio para las herencias del libro 
-class Elemento: # clase base
-    def __init__(self, referencia, tipo, ejemplares):
+## clase base para materiales 
+class Recursos: # clase base
+    def __init__(self, referencia, tipo, ejemplares ):
+        # atributos basicos
         self.__referencia = referencia
         self.__tipo = tipo
-        self.__ejemplares = ejemplares 
+        # metodos para gestionar ejemplares
+        self.__ejemplares_totales = ejemplares 
+        self.__ejemplares_disponibles = ejemplares  
 
-# clase libro que hereda de elemento
-class Libro(Elemento):
+# getters genericos
+    def get_referencia(self):
+        return self.__referencia
+    
+    def get_tipo(self):
+        return self.__tipo
+    
+    def get_ejemplares_totales(self): # disponibles totales
+        return self.__ejemplares_totales
+    
+    def get_ejemplares_disponibles(self): # disponibles para prestar
+        return self.__ejemplares_disponibles
+
+## clase libro que hereda de recursos
+class Libro(Recursos):
     def __init__(self, referencia, tipo, ejemplares, isbn, titulo, autor, año_publicacion ):
-        super().__init__(tipo, ejemplares)
+        super().__init__(referencia, tipo, ejemplares)
         self.__isbn = isbn
         self.__titulo = titulo
         self.__autor = autor
         self.__año_publicacion = año_publicacion
-
+  
+    # atributos especificos del libro
     def get_isbn(self):
         return self.__isbn
     
@@ -26,25 +43,20 @@ class Libro(Elemento):
          
     def get_autor(self):
         return self.__autor 
-
-# setters (modificar disponibilidad)
-    def set_ejemplares(self, ejemplares):
-        self.__ejemplares = ejemplares
-
-# metodos para prestar y devolver
+    
+    # metodos libro (para prestar devolvver y mostrar libros)
     def prestar(self):
         if self.__ejemplares_disponibles > 0:
-            self.__ejemplares_disponibles -= 1
-            return True
-        return False   
-
-    def devolver(self):
-        self.__ejemplares_disponibles += 1
-
- # representacion del objeto
+                self.__ejemplares_disponibles -= 1
+                return True
+        else:
+                return False
+        
+    def mostrar_disponibles(self):
+        return self.__ejemplares_disponibles
     
-    def __str__(self):
-                return f"{self.get_titulo()} por {self.get_autor()}, ISBN: {self.get_isbn()}, Año: {self.get_año_publicacion()}, Disponibles: {self.get_ejemplares_disponibles()}"
-
-        # Usamos los getters para acceder a los atributos de la clase base
-
+    def devolver(self):
+        if self.__ejemplares_disponibles < self.__ejemplares_totales:
+             self.__ejemplares_disponibles += 1
+        else:
+             return False
