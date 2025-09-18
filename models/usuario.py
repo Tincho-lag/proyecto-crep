@@ -6,23 +6,46 @@ class Administrador:  # desarrollar luego (no usado por ahora) se supone que pue
         self.__nombre = nombre
 
 class Usuario: # clase base
-    def __init__(self, id, nombre, domicilio, material_prestado = []):
+    def __init__(self, id, nombre, domicilio, material_prestado , estado):
         self.__id = id
         self.__nombre = nombre
         self.__domicilio = domicilio
         self.__material_prestado = []  #lista para rastrear materiales prestados
+        # metodos para gestionar usuario
         self.__estado = None # por defecto activo con string "activo"
-        self.__suspencion = None # poner fecha de suspencion
-        self.__tipo = None  
 
+# setters usuario
+    def get_id_socio(self):
+        return self.__id 
+    
+    def get_nombre(self, nombre):
+        self.__nombre = nombre  
+
+    def get_domicilio(self, domicilio):
+        self.__domicilio = domicilio
+
+    def get_material_prestado(self, material_prestado):
+        self.__material_prestado = material_prestado
+
+    def get_estado(self, estado):
+        self.__estado = estado
+
+    def get_suspencion(self, suspencion):
+        self.__suspencion = suspencion
+
+    def get_tipo(self, tipo):
+        self.__tipo = tipo          
+    
 class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar prestamos
-    def __init__(self, id, nombre, domicilio, carrera, tipo, material_prestado = None ): 
-        super().__init__(carrera, tipo)
+    def __init__(self, id, nombre, domicilio, material_prestado, estado, suspencion, carrera, tipo ):
+        super().__init__(id, nombre, domicilio, material_prestado , estado)
+        self.__suspencion = suspencion
         self.__carrera = carrera
         self.__tipo = "Estudiante"
+    # setters
 
 class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
-    def __init__(self, id, nombre, domicilio, carrera, tipo, material_prestado = None ):
+    def __init__(self, id, nombre, domicilio, material_prestado, estado, suspencion, carrera, tipo ):
         super().__init__(id , nombre, domicilio, material_prestado)
         self.__tipo = "Profesor"
 
@@ -36,24 +59,6 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
     def set_tipo(self, tipo):
         self.__tipo = tipo 
     def material_prestado (): # lista prestamos del usuario incompleta no se como hacerla
-
-    # getters
-    def get_id_socio(self):
-        return self.__id_socio
-
-    def get_nombre(self):
-        return self.__nombre
-
-    def get_material_prestado(self):
-        return self.__material_prestado
-
-    # setters
-    def set_nombre(self, nombre):
-        self.__nombre = nombre
-        self.__telefono = telefono
-
-
-
 
 #biblioteca_sistema 
 
