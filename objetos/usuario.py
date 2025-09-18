@@ -1,6 +1,7 @@
-# usuario.py
-
-class Administrador:  # desarrollar luego (no usado por ahora) se supone que puede agregar o eliminar usuarios
+# objetos/usuario.py
+class Administrador:  
+# desarrollar luego (no usado por ahora) se supone que  
+# solo esta clase puede agregar o eliminar usuarios
     def __init__(self, id, nombre, ):
         self.__id = id
         self.__nombre = nombre
@@ -11,16 +12,23 @@ class Usuario: # clase base
         self.__nombre = nombre
         self.__domicilio = domicilio
         self.__material_prestado = []  #lista para rastrear materiales prestados
-        # metodos para gestionar usuario
-        self.__estado = None # por defecto activo con string "activo"
+        self.__estado = "activo" # puede ser activo o suspendido
 
-# setters usuario
+# setters usuario modificar datos
+
+    def set_nombre(self, nombre):
+        self.__nombre = nombre
+    
+    def set_domicilio(self, domicilio):
+        self.__domicilio = domicilio
+        
+# getters usuario
     def get_id_socio(self):
         return self.__id 
     
-    def get_nombre(self, nombre):
-        self.__nombre = nombre  
-
+    def get_nombre(self):
+        return self.__nombre
+ 
     def get_domicilio(self, domicilio):
         self.__domicilio = domicilio
 
@@ -28,48 +36,41 @@ class Usuario: # clase base
         self.__material_prestado = material_prestado
 
     def get_estado(self, estado):
-        self.__estado = estado
-
-    def get_suspencion(self, suspencion):
-        self.__suspencion = suspencion
-
-    def get_tipo(self, tipo):
-        self.__tipo = tipo          
-    
-class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar prestamos
-    def __init__(self, id, nombre, domicilio, material_prestado, estado, suspencion, carrera, tipo ):
-        super().__init__(id, nombre, domicilio, material_prestado , estado)
-        self.__suspencion = suspencion
-        self.__carrera = carrera
-        self.__tipo = "Estudiante"
-    # setters
-
-class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
-    def __init__(self, id, nombre, domicilio, material_prestado, estado, suspencion, carrera, tipo ):
-        super().__init__(id , nombre, domicilio, material_prestado)
-        self.__tipo = "Profesor"
-
-    # setters
+        self.__estado = estado        
+# setters
     def set_nombre(self, nombre):
         self.__nombre = nombre
     def set_domicilio(self, domicilio):
         self.__domicilio = domicilio
-    def set_carrera(self, carrera):
-        self.__carrera = carrera
-    def set_tipo(self, tipo):
-        self.__tipo = tipo 
-    def material_prestado (): # lista prestamos del usuario incompleta no se como hacerla
+
+# prestamos del usuario
+    def prestar_material(self, material):
+    
+
+
+
 
 #biblioteca_sistema 
 
 # Estructura del proyecto:
-#├── models/a
-#│   ├────── elemento.py          # Clase base para materiales # Libro, Revista, DVD
-#│   ├────── utilidades.py     # Funciones auxiliares # Validaciones, etc.
-#│   ├────── usuario.py         # Clases de usuarios #  Socio(Clase base),Estudiante, Profesor 
+#├── objetos/                # Carpeta para las clases principales
+#│   ├────── elemento.py          # Clase base para materiales # Libro, Cables, DVD etc
+#│   ├────── utilidades.py     # Funciones auxiliares validaciones, etc.
+#│   ├────── usuario.py         # Clases de usuarios #  Usuario(Clase base),Estudiante, Profesor 
 #│   ├────── biblioteca.py    # Clase principal del sistema # Gestión de materiales y usuarios
 #├── app.py                      # Archivo principal para ejecutar la aplicación
-#├── data/                       # Carpeta para almacenar archivos de datos
+#├── resources/              # Carpeta para recursos estáticos # Imágenes, íconos, etc.
+#│   ├────── data/                 # Carpeta para almacenar archivos de datos
+#│   ├────── images/               # Carpeta para imágenes e iconos
 #├── gui/                    # Carpeta para la interfaz gráfica # Tkinter  Parte Martin 
+#├── notas                 # Carpeta para notas y documentación 
+#│   ├── diagramas/              # Carpeta para diagramas UML y otros
+#│   ├── notas.txt              # Notas del proyecto
+#├── tests/                  # Carpeta para pruebas unitarias
+#│   ├── test_biblioteca.py      # Pruebas para la clase
+#└── README.TXT               # Documentación del proyecto
+#└── requirements.txt        # Dependencias del proyecto
+
+
 
 

@@ -1,4 +1,4 @@
-# utilidades.py
+# objetos/utilidades.py
 def es_numero_entero(cadena):
     if not cadena:
         return False

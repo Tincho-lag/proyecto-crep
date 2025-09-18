@@ -1,5 +1,5 @@
 # app.py
-from models.elemento import Libro
+from objetos import Libro
 
 libro1 = Libro("978-0743273565", "El Gran Gatsby", "F. Scott Fitzgerald", 1925, 3)
 libro2 = Libro("978-0451524935", "1984", "George Orwell", 1949, 2)
