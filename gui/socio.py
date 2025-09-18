@@ -6,29 +6,29 @@ def generar_id_simple(archivo="socios.txt"):
     try:
 #____ Esto es pra que el usuario no tenga que crear el ID manualmente, si no existe, se crea automaticamente
         with open(archivo, "r", encoding="utf-8") as f:
-#______Lee todas las líneas del archivo y las guarda en la lista lineas, cada elemento de la lista es una línea del archivo, normalmente con información de un socio, como "nombre,ID,correo"
-            lineas = f.readlines()  
             
-#______Verifica si esta vacío y si el archivo está vacío (no hay datos), devuelve "001" como el primer ID.
+        #___Lo que hace es leer cada line del archivo f.
+        #___(.strip()) = elimina espacios o saltos de línea al inicio o al final.
+#___________(.split("-")) = divide la línea en partes separadas por comas, generando una lista
+            lineas = [line.strip() for line in f if line.strip()]
+#____Aquí se verifica si lineas está vacío (es decir, no había socios en el archivo) y si no hay registros, significa que es el primer socio, por lo tanto devuelve "001"         
             if not lineas:
-                return "001"  
-#__________________Estas lineas  (lineas[-1]) = toma la última línea del archivo, es decir, el último socio registrado.
-#________________________________(.strip()) = elimina espacios o saltos de línea al inicio o al final.
-#________________________________(.split("-")) = divide la línea en partes separadas por comas, generando una lista
-            ultimo = lineas[-1].strip().split(",")[1]  
-         #___Convierte el último ID a un número entero con int() y le suma 1 para generar el siguiente ID en secuencia.
-            nuevo_id = int(ultimo) + 1
-        #___Convierte el nuevo ID de vuelta a cadena con str() y el (.zfill(3) = asegura que tenga 3 dígitos
-            return str(nuevo_id).zfill(3)
+                return "001"
+        #___Recorre las líneas en orden inverso (desde la última hasta la primera) para encontrar el ID más alto.
+        #___Esto es eficiente porque el ID más alto suele estar al final del archivo.
+            for linea in reversed(lineas):
+                #___Separa la línea en partes usando la coma como delimitador.
+                partes = linea.split(",")
+                if len(partes) > 0 and partes[0].isdigit():
+                #___Convierte el último ID a un número entero con int() y le suma 1 para generar el siguiente ID en secuencia.
+                    nuevo_id = int(partes[0]) + 1
+                #___Convierte el nuevo ID de vuelta a cadena con str() y el (.zfill(3) = asegura que tenga 3 dígitos
+                    return str(nuevo_id).zfill(3)
+            return "001"
     #____ Si el archivo no existe, devuelve "001" como el primer ID.
     except FileNotFoundError:
         return "001"
 
-#________________________________Clases de Registro y gestor de socios_____________________________________
-#__________________________Gestor de Socios, donde se guarda todos los  datos de los socios
-# En las clases socio, estudiante y profesor, representan los diferentes tipos de socios y sus datos
-#   Cada clase tiene un metodo -"to_line()"- convierte los datos de los socios en una línea de texto para guardarlos en un archivo.
-# _____________________________________
 class Socio:
     def __init__(self, id, nombre, ci, correo, domicilio, observaciones):
         self.id = id
@@ -59,8 +59,7 @@ class Profesor(Socio):
 
     def to_line(self):
         return f"{self.id},{self.tipo},{self.nombre},{self.ci},{self.correo},{self.materia},{self.domicilio},{self.observaciones}\n"
-    
-    
+
 #______________________________________La clase GestorSocios se encarga de guardar esos datos en un archivo (socios.txt) para luego leerlos.
 class GestorSocios:
     def __init__(self, archivo="socios.txt"):
