@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from gui.registro_socios import mostrar_registro  # Importación desde paquete gui
+from gui.registro_socios import mostrar_registro  
 
 def limpiar_main():
     for widget in main_frame.winfo_children():
