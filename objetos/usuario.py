@@ -70,7 +70,3 @@ class Usuario: # clase base
 #│   ├── test_biblioteca.py      # Pruebas para la clase
 #└── README.TXT               # Documentación del proyecto
 #└── requirements.txt        # Dependencias del proyecto
-
-
-
-

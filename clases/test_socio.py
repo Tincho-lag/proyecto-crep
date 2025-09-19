@@ -1,4 +1,7 @@
 import os
+from gui.registro_socios import generar_id, agregar_socio
+
+
 
  #_____Aca difinimos la funcion  generar_id_simple______(archivo="socios.txt") es decirle a la función dónde buscar los IDs existentes para poder calcular el siguiente.
 def generar_id_simple(archivo="socios.txt"):
@@ -89,3 +92,5 @@ class GestorSocios:
 #______El -line.split("-")- divide cada dato de los socios en una lista separada por un guieon(,).
 #El -i.readlines()- lee todas las líneas del archivo en una lista.
             return [line.strip().split(",") for line in i.readlines()]
+
+
