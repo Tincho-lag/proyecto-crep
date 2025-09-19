@@ -1,10 +1,11 @@
 # objetos/usuario.py
 class Administrador:  
-# desarrollar luego (no usado por ahora) se supone que  
-# solo esta clase puede agregar o eliminar usuarios
+# hacer despues (no usado por ahora) se supone que  
+# solo esta clase puede agregar o eliminar usuarios 
     def __init__(self, id, nombre, ):
         self.__id = id
         self.__nombre = nombre
+###################################################
 
 class Usuario: # clase base
     def __init__(self, id, nombre, domicilio):
@@ -59,6 +60,18 @@ class Usuario: # clase base
     def __str__(self):
         estado_texto = "ACTIVO" if self.estado_activo() else "SUSPENDIDO"
         return f"{self.get_nombre()} (ID: {self.get_id()}) - {estado_texto}"
+
+class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar prestamos
+    def __init__(self, id, nombre, domicilio):
+        super().__init__(id, nombre, domicilio,)
+        self.__tipo = "Estudiante"
+
+class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
+    def __init__(self, id, nombre, domicilio,):
+        super().__init__(id , nombre, domicilio)
+        self.__tipo = "Profesor"
+
+    
 
 
 #biblioteca_sistema 
