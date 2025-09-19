@@ -1,9 +1,82 @@
+# registro_socios.py
+import os
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tests.test_socio import Estudiante, Profesor, GestorSocios, generar_id_simple
 
+# ---------------- RUTA DEL ARCHIVO DE DATOS ---------------- #
+DATA_DIR = os.path.join(os.path.dirname(__file__), "../resources/data")
+os.makedirs(DATA_DIR, exist_ok=True)
+ARCHIVO_SOCIOS = os.path.join(DATA_DIR, "socios.txt")
+
+# ---------------- Clases de socios ---------------- #
+class Estudiante:
+    def __init__(self, id_, nombre, ci, correo, carrera, domicilio, observaciones):
+        self.id = id_
+        self.nombre = nombre
+        self.ci = ci
+        self.correo = correo
+        self.extra = carrera
+        self.domicilio = domicilio
+        self.observaciones = observaciones
+
+    def to_list(self):
+        return [self.id, "Estudiante", self.nombre, self.ci, self.correo, self.extra, self.domicilio, self.observaciones]
+
+class Profesor:
+    def __init__(self, id_, nombre, ci, correo, materia, domicilio, observaciones):
+        self.id = id_
+        self.nombre = nombre
+        self.ci = ci
+        self.correo = correo
+        self.extra = materia
+        self.domicilio = domicilio
+        self.observaciones = observaciones
+
+    def to_list(self):
+        return [self.id, "Profesor", self.nombre, self.ci, self.correo, self.extra, self.domicilio, self.observaciones]
+
+# ---------------- Gestor de socios ---------------- #
+class GestorSocios:
+    def __init__(self, archivo=ARCHIVO_SOCIOS):
+        self.archivo = archivo
+        self.socios = self.leer_todos()
+
+    def leer_todos(self):
+        socios = []
+        if os.path.exists(self.archivo):
+            with open(self.archivo, "r", encoding="utf-8") as f:
+                for linea in f:
+                    linea = linea.strip()
+                    if linea:
+                        socios.append(linea.split(","))
+        return socios
+
+    def guardar(self, socio):
+        self.socios.append(socio.to_list())
+        self.guardar_todos()
+
+    def guardar_todos(self):
+        with open(self.archivo, "w", encoding="utf-8") as f:
+            for s in self.socios:
+                f.write(",".join(s) + "\n")
+
+    def eliminar_por_id(self, id_):
+        self.socios = [s for s in self.socios if s[0] != id_]
+        self.guardar_todos()
+
+# ---------------- Generar ID automático ---------------- #
+def generar_id_simple(archivo=ARCHIVO_SOCIOS):
+    if not os.path.exists(archivo):
+        return "001"
+    with open(archivo, "r", encoding="utf-8") as f:
+        lineas = [line.strip() for line in f if line.strip()]
+        if not lineas:
+            return "001"
+        ultimo_id = lineas[-1].split(",")[0]
+        return f"{int(ultimo_id)+1:03}"
+
+# ---------------- GUI para registrar socios ---------------- #
 def mostrar_registro(main_frame):
-    # Limpiar pantalla
     for widget in main_frame.winfo_children():
         widget.destroy()
 
@@ -19,12 +92,10 @@ def mostrar_registro(main_frame):
     tipo_var = tk.StringVar(value="Estudiante")
     entries = {}
 
-    # Tipo de socio
     tk.Label(form_frame, text="Tipo de Socio:", bg="#e6f2ff").grid(row=0, column=0, sticky="e", pady=2)
     combo_tipo = ttk.Combobox(form_frame, textvariable=tipo_var, values=["Estudiante", "Profesor"], state="readonly")
     combo_tipo.grid(row=0, column=1, sticky="w", pady=2)
 
-    # Campos de texto
     labels = ["ID:", "Nombre:", "Cédula:", "Correo:", "Carrera/Materia:", "Domicilio:"]
     for i, label in enumerate(labels, start=1):
         tk.Label(form_frame, text=label, bg="#e6f2ff").grid(row=i, column=0, sticky="e", pady=2)
@@ -32,10 +103,8 @@ def mostrar_registro(main_frame):
         entry.grid(row=i, column=1, sticky="w", pady=2)
         entries[label] = entry
 
-    # ID no editable (se genera solo)
     entries["ID:"].config(state="readonly")
 
-    # Observaciones
     tk.Label(form_frame, text="Observaciones:", bg="#e6f2ff").grid(row=len(labels)+1, column=0, sticky="ne", pady=2)
     entry_obs = tk.Text(form_frame, width=40, height=3)
     entry_obs.grid(row=len(labels)+1, column=1, sticky="w", pady=2)
@@ -100,10 +169,7 @@ def mostrar_registro(main_frame):
             return
         valores = tabla.item(item, "values")
         id_borrar = valores[0]
-        nuevos = [s for s in gestor.leer_todos() if s[1] != id_borrar]
-        with open(gestor.archivo, "w", encoding="utf-8") as f:
-            for s in nuevos:
-                f.write(",".join(s) + "\n")
+        gestor.eliminar_por_id(id_borrar)
         actualizar_tabla()
         limpiar_campos()
         messagebox.showinfo("Éxito", "Socio eliminado")
