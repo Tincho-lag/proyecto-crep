@@ -1,11 +1,14 @@
 # objetos/elemento.py 
 
-class Recursos: # clase base
-    def __init__(self, referencia, tipo, ejemplares ):
+class Recursos: 
+    def __init__(self, referencia, tipo, ejemplares_totales, ejemplares_disponibles):
         self.__referencia = referencia
         self.__tipo = tipo 
-        self.__ejemplares_totales = ejemplares 
-        self.__ejemplares_disponibles = ejemplares  
+        self.__ejemplares_totales = ejemplares_totales
+        self.__ejemplares_disponibles = ejemplares_disponibles
+    
+    def __str__(self):
+        return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, Ejemplares totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
 
 # getters 
     def get_referencia(self):
@@ -42,20 +45,18 @@ class Recursos: # clase base
         else:
              return False
 
-def __str__(self):
-        return f"{self.__tipo} {self.__referencia} - Disponibles: {self.__ejemplares_disponibles}/{self.__ejemplares_totales}"
-
-
 class Libro(Recursos):
-    def __init__(self, referencia, tipo, isbn, titulo, autor, año_publicacion,ejemplares ):
-        super().__init__(referencia, tipo, ejemplares) 
-        self.__tipo = "Libro"
+    def __init__(self, referencia, tipo, isbn, titulo, autor, año_publicacion,ejemplares_totales, ejemplares_disponibles ):
+        super().__init__(referencia, tipo, ejemplares_totales, ejemplares_disponibles) 
         self.__isbn = isbn
         self.__titulo = titulo
         self.__autor = autor
         self.__año_publicacion = año_publicacion
-  
-
+        
+    def __str__(self):
+        base_str = super().__str__()
+        return f"{base_str}, ISBN: {self.__isbn}, Título: {self.__titulo}, Autor: {self.__autor}, Año de publicación: {self.__año_publicacion}"
+    
     # atributos especificos del libro
     
     def get_isbn(self):
@@ -69,7 +70,5 @@ class Libro(Recursos):
     
     def get_año_publicacion(self):
         return self.__año_publicacion 
-         
-
-def __str__(self):
-    return f"{self.get_titulo()} por {self.get_autor()}, ISBN: {self.get_isbn()}, Disponibles: {self.get_ejemplares_disponibles()}/{self.get_ejemplares_totales()}"
+    
+    
