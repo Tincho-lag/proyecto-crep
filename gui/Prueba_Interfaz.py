@@ -1,4 +1,3 @@
-# Prueba_Interfaz.py
 import tkinter as tk
 from PIL import Image, ImageTk
 from gui.registro_socios import mostrar_registro  # Importación desde paquete gui
