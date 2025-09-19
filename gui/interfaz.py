@@ -26,22 +26,22 @@ ventana = tk.Tk()
 ventana.title("Biblioteca CERP del Litoral")
 ventana.geometry("1280x720")
 
-# Frame superior
+# ____________________Frame superior_____________________ #
 top_frame = tk.Frame(ventana, bg="#FFD39E", height=80)
 top_frame.pack(side="top", fill="x")
 
-# Logos y título
+#_________________Logos y título_________________#
 imagen = Image.open(r"resources/images/ElCerp.png").resize((80, 80))
 logo_cerp = ImageTk.PhotoImage(imagen)
 tk.Label(top_frame, image=logo_cerp, bg="#FFD39E").pack(side="left", padx=25, pady=10)
 
 tk.Label(top_frame, text="Biblioteca CERP del Litoral", font=("Arial", 20, "bold"), bg="#FFD39E").pack(pady=10)
 
-# Frame principal
+#______________Frame principal__________________#
 main_frame = tk.Frame(ventana, bg="white")
 main_frame.pack(side="right", fill="both", expand=True)
 
-# Sidebar
+#__________frame izquierdo (menú)__________#
 left_frame = tk.Frame(ventana, width=200, bg="#FFD39E")
 left_frame.pack(side="left", fill="y")
 
@@ -57,5 +57,5 @@ imagen_anep = Image.open(r"resources/images/Logo_ANEP.png").resize((135, 65))
 logo_anep = ImageTk.PhotoImage(imagen_anep)
 tk.Label(left_frame, image=logo_anep, bg="#FFD39E").pack(side="bottom", pady=20)
 
-# ---------------- Ejecutar ventana ---------------- #
+# ___ Ejecutar ventana______________#
 ventana.mainloop()
