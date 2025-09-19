@@ -1,30 +1,15 @@
-# app.py
-from objetos import Libro
+#  tests/test_biblioteca.py 
+from objetos.elemento import Libro
+from objetos.socios import Estudiante
+from objetos.socios import Profesor
 
-libro1 = Libro("978-0743273565", "El Gran Gatsby", "F. Scott Fitzgerald", 1925, 3)
-libro2 = Libro("978-0451524935", "1984", "George Orwell", 1949, 2)
-libro3 = Libro("978-0061120084", "Matar un ruiseñor", "Harper Lee", 1960, 1)
 
-print("=== PRUEBA DE LA CLASE  Libro ===")
+libro1 = Libro("REF001", "Libro", "978-3-16-148410-0", "Introducción a Python", "Juan Pérez", 2020, 5)
 print(f"Libro creado: {libro1}")
-print(f"Libro creado: {libro2}")
-
-    # Probar préstamo
-print(f"¿Se puede prestar? {libro1.prestar()}")
-print(f"Después del préstamo: {libro1}")
     
-    # Prestar todos los ejemplares
-libro1.prestar()
-print(f"Después de prestar todo: {libro1}")
+    # Crear estudiante
+estudiante1 = Estudiante("2024001", "Ana García", "Tacuarembó 123")
+print(f"Estudiante creado: {estudiante1}")
 
-    # Intentar prestar cuando no hay disponibles
-print(f"¿Se puede prestar más? {libro1.prestar()}")
-    
-    # Devolver uno
-libro1.devolver()
-print(f"Después de devolver uno: {libro1}")
-   
-# Probar getters
-print(f"Título: {libro1.get_titulo()}")
-print(f"Autor: {libro1.get_autor()}")
-print(f"ISBN: {libro1.get_isbn()}")
+profe2 = Estudiante("2024001", "Ana García", "Tacuarembó 123")
+print(f"Estudiante creado: {profe2}")

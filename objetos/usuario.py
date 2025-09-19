@@ -7,52 +7,64 @@ class Administrador:
         self.__nombre = nombre
 
 class Usuario: # clase base
-    def __init__(self, id, nombre, domicilio, material_prestado , estado):
+    def __init__(self, id, nombre, domicilio):
         self.__id = id
         self.__nombre = nombre
         self.__domicilio = domicilio
         self.__material_prestado = []  #lista para rastrear materiales prestados
         self.__estado = "activo" # puede ser activo o suspendido
+        self.__fecha_fin_suspension = None
 
 # setters usuario modificar datos
-
     def set_nombre(self, nombre):
         self.__nombre = nombre
-    
+
     def set_domicilio(self, domicilio):
         self.__domicilio = domicilio
         
 # getters usuario
-    def get_id_socio(self):
+    def get_id(self):
         return self.__id 
     
     def get_nombre(self):
         return self.__nombre
  
-    def get_domicilio(self, domicilio):
-        self.__domicilio = domicilio
+    def get_domicilio(self):
+        return self.__domicilio
 
-    def get_material_prestado(self, material_prestado):
-        self.__material_prestado = material_prestado
+    def get_material_prestado(self):
+        return self.__material_prestado
 
-    def get_estado(self, estado):
-        self.__estado = estado        
-# setters
-    def set_nombre(self, nombre):
-        self.__nombre = nombre
-    def set_domicilio(self, domicilio):
-        self.__domicilio = domicilio
+    def get_estado(self):
+        return self.__estado  
 
-# prestamos del usuario
-    def prestar_material(self, material):
+# métodos para gestionar préstamos
+    def prestar_material(self, isbn):
+        self.__material_prestado.append(isbn)
     
+    def devolver_material(self, isbn):
+        if isbn in self.__material_prestado:
+            self.__material_prestado.remove(isbn)
+    
+    def estado_activo(self):
+        return self.__estado == "activo"
+    
+    def suspender(self, dias):
+        self.__estado = "suspendido" 
 
+    def reactivar(self):
+        self.__estado = "activo"
+        self.__fecha_fin_suspension = None
 
+    def __str__(self):
+        estado_texto = "ACTIVO" if self.estado_activo() else "SUSPENDIDO"
+        return f"{self.get_nombre()} (ID: {self.get_id()}) - {estado_texto}"
 
 
 #biblioteca_sistema 
 
-# Estructura del proyecto:
+# estructura del actual proyecto
+# proyecto- crep:
 #├── objetos/                # Carpeta para las clases principales
 #│   ├────── elemento.py          # Clase base para materiales # Libro, Cables, DVD etc
 #│   ├────── utilidades.py     # Funciones auxiliares validaciones, etc.

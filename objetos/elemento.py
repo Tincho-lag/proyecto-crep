@@ -1,15 +1,13 @@
 # objetos/elemento.py 
-## clase base para materiales 
+
 class Recursos: # clase base
     def __init__(self, referencia, tipo, ejemplares ):
-        # atributos basicos
         self.__referencia = referencia
-        self.__tipo = tipo
-        # metodos para gestionar ejemplares
+        self.__tipo = tipo 
         self.__ejemplares_totales = ejemplares 
         self.__ejemplares_disponibles = ejemplares  
 
-# getters genericos
+# getters 
     def get_referencia(self):
         return self.__referencia
     
@@ -21,31 +19,15 @@ class Recursos: # clase base
     
     def get_ejemplares_disponibles(self): # disponibles para prestar
         return self.__ejemplares_disponibles
-
-## clase libro que hereda de recursos
-class Libro(Recursos):
-    def __init__(self, referencia, tipo, ejemplares, isbn, titulo, autor, año_publicacion ):
-        super().__init__(referencia, tipo, ejemplares)
-        self.__isbn = isbn
-        self.__titulo = titulo
-        self.__autor = autor
-        self.__año_publicacion = año_publicacion
-  
-    # atributos especificos del libro
-    def get_isbn(self):
-        return self.__isbn
     
-    def get_titulo(self):
-        return self.__titulo  
+# setters
+    def set_referencia(self, referencia):
+        self.__referencia = referencia
     
-    def get_autor(self):
-        return self.__autor 
+# metodos (para prestar devolvver y mostrar materiales)
+    def hay_disponibles(self):
+        return self.__ejemplares_disponibles > 0  # devuelve True si hay ejemplares disponibles
     
-    def get_año_publicacion(self):
-        return self.__año_publicacion 
-         
-        
-    # metodos libro (para prestar devolvver y mostrar libros)
     def prestar(self):
         if self.__ejemplares_disponibles > 0:
                 self.__ejemplares_disponibles -= 1 # si hay mas de 0 ejemplares disponibles reduce de a 1
@@ -59,3 +41,35 @@ class Libro(Recursos):
              return True
         else:
              return False
+
+def __str__(self):
+        return f"{self.__tipo} {self.__referencia} - Disponibles: {self.__ejemplares_disponibles}/{self.__ejemplares_totales}"
+
+
+class Libro(Recursos):
+    def __init__(self, referencia, tipo, isbn, titulo, autor, año_publicacion,ejemplares ):
+        super().__init__(referencia, tipo, ejemplares) 
+        self.__tipo = "Libro"
+        self.__isbn = isbn
+        self.__titulo = titulo
+        self.__autor = autor
+        self.__año_publicacion = año_publicacion
+  
+
+    # atributos especificos del libro
+    
+    def get_isbn(self):
+        return self.__isbn
+    
+    def get_titulo(self):
+        return self.__titulo  
+    
+    def get_autor(self):
+        return self.__autor 
+    
+    def get_año_publicacion(self):
+        return self.__año_publicacion 
+         
+
+def __str__(self):
+    return f"{self.get_titulo()} por {self.get_autor()}, ISBN: {self.get_isbn()}, Disponibles: {self.get_ejemplares_disponibles()}/{self.get_ejemplares_totales()}"

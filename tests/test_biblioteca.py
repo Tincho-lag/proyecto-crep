@@ -1,13 +1,8 @@
-#  tests/test_biblioteca.py 
+#  tests/test_biblioteca.py
 from objetos.elemento import Libro
-from objetos.usuario import Usuario 
-from objetos.usuario import Estudiante
-from objetos.usuario import Profesor
+from objetos.usuario import Usuario, Estudiante, Profesor
 
-
-libro1 = Libro("REF001", "978-123456", "El Principito", "Saint-Exupéry", 1943, 2)
+libro1 = Libro("REF001", "Libro", "978-3-16-148410-0", "Introducción a Python", "Juan Pérez", 2020, 5)
 print(f"Libro creado: {libro1}")
-    
-    # Crear estudiante
-estudiante1 = Estudiante("2024001", "Ana García", "Tacuarembó 123", "Informática")
-print(f"Estudiante creado: {estudiante1}")
+
+
