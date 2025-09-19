@@ -5,9 +5,8 @@ class Administrador:
     def __init__(self, id, nombre, ):
         self.__id = id
         self.__nombre = nombre
-###################################################
 
-class Usuario: # clase base
+class Usuario: 
     def __init__(self, id, nombre, domicilio):
         self.__id = id
         self.__nombre = nombre
@@ -81,7 +80,7 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
 #├── objetos/                # Carpeta para las clases principales
 #│   ├────── elemento.py          # Clase base para materiales # Libro, Cables, DVD etc
 #│   ├────── utilidades.py     # Funciones auxiliares validaciones, etc.
-#│   ├────── usuario.py         # Clases de usuarios #  Usuario(Clase base),Estudiante, Profesor 
+#│   ├────── usuario.py         # Clases de usuarios Estudiante Profesor 
 #│   ├────── biblioteca.py    # Clase principal del sistema # Gestión de materiales y usuarios
 #├── app.py                      # Archivo principal para ejecutar la aplicación
 #├── resources/              # Carpeta para recursos estáticos # Imágenes, íconos, etc.
@@ -95,3 +94,4 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
 #│   ├── test_biblioteca.py      # Pruebas para la clase
 #└── README.TXT               # Documentación del proyecto
 #└── requirements.txt        # Dependencias del proyecto
+
