@@ -17,3 +17,4 @@ print(f"Estudiante creado: {estudiante1}")
 
 profe2 = Profesor("2024001", "Ana García", "Tacuarembó 123")
 print(f"Estudiante creado: {profe2}")
+
