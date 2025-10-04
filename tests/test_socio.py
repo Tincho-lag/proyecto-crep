@@ -1,10 +1,14 @@
 import os
-from gui.registro_socios import generar_id, agregar_socio
+#from gui.registro_socios import generar_id, agregar_socio
 
+DATA_DIR = os.path.join(os.path.dirname(__file__), "../resources/data")
+os.makedirs(DATA_DIR, exist_ok=True)
+ARCHIVO_SOCIOS = os.path.join(DATA_DIR, "socios.txt")
 
+1
 
  #_____Aca difinimos la funcion  generar_id_simple______(archivo="socios.txt") es decirle a la función dónde buscar los IDs existentes para poder calcular el siguiente.
-def generar_id_simple(archivo="socios.txt"):
+def generar_id_simple(archivo=ARCHIVO_SOCIOS):
 #____Esto sirve para prevenir errores: el código dentro del try se intenta ejecutar normalmente, y si ocurre un error, se salta al bloque except
     try:
 #____ Esto es pra que el usuario no tenga que crear el ID manualmente, si no existe, se crea automaticamente
@@ -65,7 +69,7 @@ class Profesor(Socio):
 
 #______________________________________La clase GestorSocios se encarga de guardar esos datos en un archivo (socios.txt) para luego leerlos.
 class GestorSocios:
-    def __init__(self, archivo="socios.txt"):
+    def __init__(self, archivo=ARCHIVO_SOCIOS):
         self.archivo = archivo
         
 #__________________El metodo  "guardar()" abre el archivo en modo append y escribe la línea.______________________________
@@ -94,3 +98,54 @@ class GestorSocios:
             return [line.strip().split(",") for line in i.readlines()]
 
 
+#Se ejecuta en la terminal con: pytest tests/test_socio.py
+if __name__ == "__main__":
+    gestor = GestorSocios()
+
+    print("=== Sistema de Registro de Socios (modo terminal) ===\n")
+
+    while True:
+        print("Opciones:")
+        print("1. Registrar nuevo socio")
+        print("2. Ver lista de socios")
+        print("3. Salir")
+
+        opcion = input("\nSeleccione una opción: ")
+
+        if opcion == "1":
+            id_nuevo = generar_id_simple()
+            nombre = input("Nombre: ")
+            ci = input("Cédula: ")
+            correo = input("Correo: ")
+            domicilio = input("Domicilio: ")
+            observaciones = input("Observaciones: ")
+
+            tipo = input("Tipo (G=General, E=Estudiante, P=Profesor): ").upper()
+            if tipo == "E":
+                carrera = input("Carrera: ")
+                socio = Estudiante(id_nuevo, nombre, ci, correo, carrera, domicilio, observaciones)
+            elif tipo == "P":
+                materia = input("Materia: ")
+                socio = Profesor(id_nuevo, nombre, ci, correo, materia, domicilio, observaciones)
+            else:
+                socio = Socio(id_nuevo, nombre, ci, correo, domicilio, observaciones)
+
+            gestor.guardar(socio)
+            print(f"\n Socio '{nombre}' registrado con ID {id_nuevo}\n")
+
+        elif opcion == "2":
+            socios = gestor.leer_todos()
+            if not socios:
+                print("\nNo hay socios registrados.\n")
+            else:
+                print("\n=== Lista de Socios ===")
+                for s in socios:
+                    print(", ".join(s))
+                print()
+
+        elif opcion == "3":
+            print("\nSaliendo del sistema...")
+            break
+
+        else:
+            print("\nOpción inválida. Intente de nuevo.\n")
