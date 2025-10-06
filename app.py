@@ -91,39 +91,52 @@ def menu_usuarios(sistema):
     print("3. Listar todos")
     opcion = input("Opción: ")
     
-    if opcion == "1":
-        id = input("ID (ej: EST001): ")
+    if opcion == "1" or opcion == "2":
+        tipo = "Estudiante" if opcion == "1" else "Profesor"
+        id_usuario = input(f"ID del {tipo} (ej: EST001, PROF001): ")
+        print(f" {tipo} '{nombre}' agregado/a.")
+
         nombre = input("Nombre: ")
         domicilio = input("Domicilio: ")
-        estudiante = Estudiante(id, nombre, domicilio)
-        sistema.agregar_usuario(estudiante)
-        print(f"Estudiante '{nombre}' agregado.")
-    
-    elif opcion == "2":
-        id = input("ID (ej: PROF001): ")
-        nombre = input("Nombre: ")
-        domicilio = input("Domicilio: ")
-        profesor = Profesor(id, nombre, domicilio)
-        sistema.agregar_usuario(profesor)
-        print(f"Profesor '{nombre}' agregado.")
+        
+        if opcion == "1":
+            nuevo_usuario = Estudiante(id_usuario , nombre, domicilio)
+        else:
+           nuevo_usuario = Profesor(id_usuario , nombre, domicilio)
+        
+        sistema.agregar_usuario(nuevo_usuario)
+        print(f" {tipo} '{nombre}' agregado/a.")
+
     
     elif opcion == "3":
         print("\n--- LISTA DE USUARIOS ---")
-        for usuario in sistema.usuarios.values():
-            print(f"  {usuario}")
+        if not sistema.usuarios:
+            print("no hay usuarios regisrados.")
+        for id_usuario, usuario in sistema.usuarios.items():
+            print(f" {usuario}")
+        else:
+            print("opcin invalida.")
 
 def menu_prestamos(sistema):
     print("\n--- REALIZAR PRÉSTAMO ---")
     id_usuario = input("ID del usuario: ")
-    titulo = input("Título del material: ")
-    
+    titulo = input("Titulo o Tipo del material: ")
     exito, msg = sistema.realizar_prestamo(id_usuario, titulo)
+    print(f"Resultado: {msg}")
+
+def menu_devoluciones(sistema):
+    print("\n--- REALIZAR DEVOLUCIÓN ---")
+    id_usuario = input("ID del usuario: ")
+    titulo = input("Titulo o Tipo del material: ")
+    exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
 
 def mostrar_catalogo(sistema):
     print("\n--- CATÁLOGO DE MATERIALES ---")
     for mat in sistema.listar_materiales():
         print(f"  {mat}")
-
+    else:
+        print("Estos son todos los materiales registrados.")
+    
 if __name__ == "__main__":
     menu_principal()

@@ -7,9 +7,12 @@ class Recursos:
         self.__ejemplares_totales = ejemplares_totales
         self.__ejemplares_disponibles = ejemplares_disponibles
     
+    def get_titulo(self):
+        return self.__tipo  # para recursos genéricos, el título es el tipo
+    
     def __str__(self):
         return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, Ejemplares totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
-
+    
 # getters 
     def get_referencia(self):
         return self.__referencia

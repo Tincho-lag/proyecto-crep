@@ -51,7 +51,7 @@ class SistemaBiblioteca:
     def realizar_prestamo(self, id_usuario, titulo_material):
         # Buscar usuario
         if id_usuario not in self.usuarios:
-            return False, "Usuario no encontrado"
+            return False, "Error en los datos ingresados. Intente nuevamente."
         
         usuario = self.usuarios[id_usuario]
         
