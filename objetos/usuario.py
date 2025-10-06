@@ -91,10 +91,11 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
 # proyecto- crep:
 #├── objetos/                # Carpeta para las clases principales
 #│   ├────── elemento.py          # Clase base para materiales # Libro, Cables, DVD etc
-#│   ├────── utilidades.py     # Funciones auxiliares validaciones, etc.
+#│   ├────── utilidades.py     # Funciones auxiliares 
 #│   ├────── usuario.py         # Clases de usuarios Estudiante Profesor 
 #│   ├────── biblioteca.py    # Clase principal del sistema # Gestión de materiales y usuarios
-#├── app.py                      # Archivo principal para ejecutar la aplicación
+#│   ├────── nodo_arbol.py    # Clase principal del sistema # Gestión de materiales y usuarios
+#├── app.py                      # Archivo principal para ejecutar test (en desuso)
 #├── resources/              # Carpeta para recursos estáticos # Imágenes, íconos, etc.
 #│   ├────── data/                 # Carpeta para almacenar archivos de datos
 #│   ├────── images/               # Carpeta para imágenes e iconos
