@@ -68,10 +68,8 @@ class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar pres
 class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
     def __init__(self, id, nombre, domicilio,):
         super().__init__(id , nombre, domicilio)
-        self.__tipo = "Profesor"
-
-    
-
+        self.__tipo = "Profesor" 
+        
 
 #biblioteca_sistema 
 
