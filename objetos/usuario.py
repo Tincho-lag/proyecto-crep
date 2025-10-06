@@ -82,7 +82,7 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
         return 5
 
     def get_dias_prestamo(self):
-        return 7
+        return 5
         
 
 #biblioteca_sistema 

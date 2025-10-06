@@ -1,4 +1,0 @@
-001,Estudiante,dads,dad,dasd,assda,dasd,dassda
-002,Estudiante,dada,ddad,daads,ddsa,sd,asd
-003,Profesor,Bruno Furtado,1254567,brunito@gmail.com,Sexologia ,Av.barbieri 69,----
-004,Estudiante,Juan Bacci,5987123-5,Juancito@gmail.com,Fisica,Bolivia 123,---

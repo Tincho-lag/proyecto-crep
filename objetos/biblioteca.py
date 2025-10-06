@@ -1,4 +1,5 @@
 # objetos/biblioteca.py 
+from  .nodo_arbol import ArbolBinario
 class Prestamo:
     def __init__(self, id_prestamo, usuario, material, dias_prestamo):
         self.__id_prestamo = id_prestamo
@@ -36,8 +37,7 @@ class SistemaBiblioteca:
     
     def agregar_material(self, material):
         if self.arbol_materiales is None:
-            from objetos.utilidades import ArbolBinario
-            self.arbol_materiales = ArbolBinario()
+                self.arbol_materiales = ArbolBinario()
         self.arbol_materiales.insertar(material)
     
     def buscar_material(self, titulo):
@@ -56,7 +56,7 @@ class SistemaBiblioteca:
         usuario = self.usuarios[id_usuario]
         
         # Verificar si está activo
-        if not usuario.esta_activo():
+        if not usuario.estado_activo():
             return False, "Usuario suspendido"
         
         # Buscar material

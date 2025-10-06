@@ -6,9 +6,9 @@ class Recursos:
         self.__tipo = tipo 
         self.__ejemplares_totales = ejemplares_totales
         self.__ejemplares_disponibles = ejemplares_disponibles
- 
+    
     def __str__(self):
-        return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, ejemplares_totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
+        return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, Ejemplares totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
 
 # getters 
     def get_referencia(self):
@@ -24,6 +24,12 @@ class Recursos:
         return self.__ejemplares_disponibles
     
 # setters
+    def set_ejemplares_totales(self):
+        self.__ejemplares_totales = ejemplares
+
+    def set_ejemplares_disponibles(self):
+        self.__ejemplares_disponibles
+
     def set_referencia(self, referencia):
         self.__referencia = referencia
     
