@@ -65,10 +65,24 @@ class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar pres
         super().__init__(id, nombre, domicilio,)
         self.__tipo = "Estudiante" 
 
+# tres articulos dos dias de prestamo para estudiantes 
+    def get_limite_prestamos(self):
+        return 3
+
+    def get_dias_prestamo(self):
+        return 2
+
 class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
     def __init__(self, id, nombre, domicilio,):
         super().__init__(id , nombre, domicilio)
         self.__tipo = "Profesor" 
+
+# cinco articulos y 7 dias de prestamo para profesores 
+    def get_limite_prestamos(self):
+        return 5
+
+    def get_dias_prestamo(self):
+        return 7
         
 
 #biblioteca_sistema 
