@@ -1,11 +1,13 @@
 # app.py
 from objetos.biblioteca import SistemaBiblioteca, guardar_materiales, cargar_materiales
-from objetos.elemento import Libro, Recursos
 from objetos.usuario import Estudiante, Profesor
+from objetos.elemento import Libro, Recursos
+
 
 def menu_principal():
     sistema = SistemaBiblioteca()
-    cargar_materiales(sistema)  # Cargar datos existentes
+    cargar_materiales(sistema)  # cargar datos existentes
+
     sistema.agregar_usuario(Estudiante("EST001", "Ana García", "Tacuarembó 123"))
     sistema.agregar_usuario(Profesor("PROF001", "Dr. Juan Pérez", "Rivera 456"))
 
@@ -65,62 +67,62 @@ def menu_materiales(sistema):
     elif opcion == "2": # agregar Recurso Genérico
         try:
             ref = input("Referencia (ej: REC001): ")
-            tipo = input("Tipo de Recurso (ej: Cargador USB, Alargue 5m): ")
+            tipo = input("Tipo de Recurso (ej: Cargador USB, Alargue): ")
             ejemplares = int(input("Ejemplares: "))
             
             recurso = Recursos(ref, tipo, ejemplares, ejemplares)
             sistema.agregar_material(recurso)
             print(f"Recurso '{tipo}' agregado")
         except ValueError:
-             print("Error en los datos ingresados. Intente nuevamente.")
+             print("Error en los datos ingresados.Intente nuevamente.")
 
     elif opcion == "3":
         mostrar_catalogo(sistema)
 
     elif opcion == "4": # buscar por titulo o tipo
-        ref = input("Ingrese título o tipo a buscar: ") # ref = referencia de busqueda 
-        material = sistema.buscar_material(ref) # buscar por titulo o tipo de referencia
+        buscar = input("Ingrese título/tipo para buscar: ") # ref = referencia de busqueda 
+        material = sistema.buscar_material(buscar) # buscar por titulo o tipo de referencia
         if material:
             print(f"Material encontrado: {material}")
         else:
             print("Material no encontrado.")
+
+        
 def menu_usuarios(sistema):
     print("\n--- GESTIÓN DE USUARIOS ---")
     print("1. Agregar Estudiante")
     print("2. Agregar Profesor")
     print("3. Listar todos")
+
     opcion = input("Opción: ")
     
     if opcion == "1" or opcion == "2":
         tipo = "Estudiante" if opcion == "1" else "Profesor"
         id_usuario = input(f"ID del {tipo} (ej: EST001, PROF001): ")
-        print(f" {tipo} '{nombre}' agregado/a.")
-
         nombre = input("Nombre: ")
         domicilio = input("Domicilio: ")
-        
+
         if opcion == "1":
             nuevo_usuario = Estudiante(id_usuario , nombre, domicilio)
         else:
            nuevo_usuario = Profesor(id_usuario , nombre, domicilio)
-        
+    
         sistema.agregar_usuario(nuevo_usuario)
-        print(f" {tipo} '{nombre}' agregado/a.")
+        print(f" {tipo} '{nombre}' agregado.")
 
     
     elif opcion == "3":
-        print("\n--- LISTA DE USUARIOS ---")
+        print("\n-- USUARIOS REGISTRADOS ---")
         if not sistema.usuarios:
-            print("no hay usuarios regisrados.")
-        for id_usuario, usuario in sistema.usuarios.items():
+            print("no hay usuarios.")
+        for usuario in sistema.usuarios.values():
             print(f" {usuario}")
-        else:
-            print("opcin invalida.")
 
 def menu_prestamos(sistema):
     print("\n--- REALIZAR PRÉSTAMO ---")
     id_usuario = input("ID del usuario: ")
     titulo = input("Titulo o Tipo del material: ")
+    
     exito, msg = sistema.realizar_prestamo(id_usuario, titulo)
     print(f"Resultado: {msg}")
 
@@ -128,6 +130,7 @@ def menu_devoluciones(sistema):
     print("\n--- REALIZAR DEVOLUCIÓN ---")
     id_usuario = input("ID del usuario: ")
     titulo = input("Titulo o Tipo del material: ")
+
     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
 
@@ -137,6 +140,6 @@ def mostrar_catalogo(sistema):
         print(f"  {mat}")
     else:
         print("Estos son todos los materiales registrados.")
-    
+
 if __name__ == "__main__":
     menu_principal()

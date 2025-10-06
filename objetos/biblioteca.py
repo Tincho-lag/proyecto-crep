@@ -1,5 +1,7 @@
 # objetos/biblioteca.py 
 from  .nodo_arbol import ArbolBinario
+from objetos.elemento import Libro, Recursos
+
 class Prestamo:
     def __init__(self, id_prestamo, usuario, material, dias_prestamo):
         self.__id_prestamo = id_prestamo
@@ -49,31 +51,30 @@ class SistemaBiblioteca:
         self.usuarios[usuario.get_id()] = usuario
     
     def realizar_prestamo(self, id_usuario, titulo_material):
-        # Buscar usuario
         if id_usuario not in self.usuarios:
-            return False, "Error en los datos ingresados. Intente nuevamente."
+            return False, "El usuario no existe"
         
         usuario = self.usuarios[id_usuario]
         
-        # Verificar si está activo
-        if not usuario.estado_activo():
+        if not usuario.estado_activo():         # verificar si esta activo
             return False, "Usuario suspendido"
         
-        # Buscar material
-        material = self.buscar_material(titulo_material)
+    
+        material = self.buscar_material(titulo_material)     # buscar material
         if material is None:
             return False, "Material no encontrado"
         
-        # Verificar disponibilidad
-        if not material.hay_disponibles():
+        
+        if not material.hay_disponibles():         # verificar disponibilidad
             return False, "Material no disponible"
         
-        # Verificar límite de préstamos
         if len(usuario.get_material_prestado()) >= usuario.get_limite_prestamos():
-            return False, "Límite de préstamos alcanzado"
-        
-        # Realizar préstamo
-        if material.prestar():
+            return False, "Límite de préstamos alcanzado" # verificar límite de prestamos
+
+    
+        if material.prestar():      # realizar prestamo
+            id_material_prestado = material.get_id_unico()
+            usuario.prestar_material(id_material_prestado)
             prestamo = Prestamo(
                 f"P{self.contador_prestamos:04d}",
                 usuario,
@@ -81,9 +82,8 @@ class SistemaBiblioteca:
                 usuario.get_dias_prestamo()
             )
             self.prestamos.append(prestamo)
-            usuario.prestar_material(material.get_isbn())
             self.contador_prestamos += 1
-            return True, "Préstamo exitoso"
+            return True, "Préstamo exitoso" 
         
         return False, "Error al prestar"
     
@@ -96,6 +96,8 @@ class SistemaBiblioteca:
         if material is None:
             return False, "Material no encontrado"
         
+        id_material_unico = material.get_id_unico()
+
         # Buscar préstamo activo
         for prestamo in self.prestamos:
             if (prestamo.esta_activo() and 
@@ -103,13 +105,13 @@ class SistemaBiblioteca:
                 prestamo.get_material().get_titulo() == titulo_material):
                 
                 material.devolver()
-                usuario.devolver_material(material.get_isbn())
+                usuario.devolver_material(id_material_unico)
                 prestamo.finalizar()
                 return True, "Devolución exitosa"
         
         return False, "Préstamo no encontrado"
     
-    def crear_reserva(self, id_usuario, isbn):
+  ###  def crear_reserva(self, id_usuario, isbn):
         if isbn not in self.reservas:
             self.reservas[isbn] = []
         if id_usuario not in self.reservas[isbn]:
@@ -123,7 +125,6 @@ class SistemaBiblioteca:
         return self.arbol_materiales.listar_todos()
 
 # persistencia de archivos (temporal revisar)
-
 
 def guardar_materiales(sistema, archivo="resources/data/materiales.txt"):
     with open(archivo, "w") as f:
@@ -146,7 +147,7 @@ def cargar_materiales(sistema, archivo="resources/data/materiales.txt"):
                                   partes[4], int(partes[5]), int(partes[6]), int(partes[7]))
                     sistema.agregar_material(libro)
     except FileNotFoundError:
-        pass
+        raise print("Archivo de materiales no encontrado. Iniciando con catálogo vacío.")
 
 
 

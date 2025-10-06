@@ -7,18 +7,22 @@ class Recursos:
         self.__ejemplares_totales = ejemplares_totales
         self.__ejemplares_disponibles = ejemplares_disponibles
     
-    def get_titulo(self):
-        return self.__tipo  # para recursos genéricos, el título es el tipo
-    
     def __str__(self):
         return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, Ejemplares totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
     
 # getters 
+
+    def get_titulo(self): # para recursos genéricos, el título es el tipo 
+        return self.__tipo  # el tipo como clave de búsqueda/ordenamiento para el arbolito
+    
+    def get_id_unico(self): # solucion para identificar cada recurso unico en el prestamo
+        return self.__referencia
+    
     def get_referencia(self):
         return self.__referencia
     
     def get_tipo(self):
-        return self.__tipo
+        return self.__tipo 
     
     def get_ejemplares_totales(self): # disponibles totales
         return self.__ejemplares_totales
@@ -27,11 +31,11 @@ class Recursos:
         return self.__ejemplares_disponibles
     
 # setters
-    def set_ejemplares_totales(self):
+    def set_ejemplares_totales(self, ejemplares):
         self.__ejemplares_totales = ejemplares
 
-    def set_ejemplares_disponibles(self):
-        self.__ejemplares_disponibles
+    def set_ejemplares_disponibles(self, ejemplares):
+        self.__ejemplares_disponibles = ejemplares
 
     def set_referencia(self, referencia):
         self.__referencia = referencia
@@ -67,6 +71,8 @@ class Libro(Recursos):
         return f"{base_str}, ISBN: {self.__isbn}, Título: {self.__titulo}, Autor: {self.__autor}, Año de publicación: {self.__año_publicacion}"
     
     # atributos especificos del libro
+    def get_id_unico(self):
+        return self.get_isbn()  # usamos el ISBN como identificador único para libros
     
     def get_isbn(self):
         return self.__isbn
