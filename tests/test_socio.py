@@ -1,5 +1,5 @@
 import os
-#from gui.registro_socios import generar_id, agregar_socio
+from gui.registro_socios import generar_id, agregar_socio
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "../resources/data")
 os.makedirs(DATA_DIR, exist_ok=True)
