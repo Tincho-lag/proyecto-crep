@@ -8,7 +8,7 @@ from objetos.biblioteca import SistemaBiblioteca
 from objetos.elemento import Libro, Recursos
 from objetos.usuario import Estudiante, Profesor
 from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
-
+ 
 class TestGUI:
     def __init__(self, root):
         self.sistema = SistemaBiblioteca()
