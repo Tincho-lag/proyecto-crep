@@ -1,57 +1,51 @@
 import os
 import sys
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from PIL import Image, ImageTk
 
 # --- Asegura que el proyecto pueda importar los módulos vecinos ---
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# --- Importa tus módulos del dominio (asegurate que existan en ../objetos) ---
+# --- Importa tus módulos del dominio ---
 from objetos.biblioteca import SistemaBiblioteca
 from objetos.elemento import Libro, Recursos
 from objetos.usuario import Estudiante, Profesor
 from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
 
-# Opcional: si tenés una función para mostrar registros de socios en GUI
+# Función opcional para mostrar registro de socios
 try:
     from gui.registro_socios import mostrar_registro
 except Exception:
-    mostrar_registro = None  # se usa solo si existe
+    mostrar_registro = None
 
 
 class BibliotecaApp:
     def __init__(self, ventana):
-        # Sistema y carga inicial
         self.sistema = SistemaBiblioteca()
         try:
             cargar_materiales(self.sistema)
             cargar_usuarios(self.sistema)
         except Exception as e:
-            # Si no existen archivos, seguimos con sistema vacío
             print("Aviso carga inicial:", e)
 
-        # Ventana principal
         self.ventana = ventana
         self.ventana.title("Biblioteca CERP del Litoral")
         self.ventana.geometry("1280x720")
         self.ventana.configure(bg="#E9ECEF")
 
-        # Paleta sobria
-        self.COLOR_PRINCIPAL = "#E3E6EA"   # header & sidebar
-        self.COLOR_BOTONES = "#D0D4D9"     # botones normales
-        self.COLOR_BOTON_HOVER = "#C1C6CC" # hover sutil
+        self.COLOR_PRINCIPAL = "#E3E6EA"
+        self.COLOR_BOTONES = "#D0D4D9"
+        self.COLOR_BOTON_HOVER = "#C1C6CC"
         self.COLOR_TEXTO = "#2C2C2C"
         self.COLOR_FONDO = "#F4F4F4"
 
-        # --- Top Frame (Título y logos) ---
+        # --- Top Frame ---
         self.top_frame = tk.Frame(self.ventana, bg=self.COLOR_PRINCIPAL, height=90)
         self.top_frame.pack(side="top", fill="x")
-
         header_content = tk.Frame(self.top_frame, bg=self.COLOR_PRINCIPAL)
         header_content.pack(side="left", padx=25, pady=10)
 
-        # Logo CERP (intenta cargar, si falla muestra texto)
         self.logo_cerp = None
         try:
             imagen = Image.open(r"resources/images/ElCerp.png").resize((70, 70))
@@ -61,7 +55,6 @@ class BibliotecaApp:
             tk.Label(header_content, text="[ElCerp]", bg=self.COLOR_PRINCIPAL, fg=self.COLOR_TEXTO,
                      font=("Segoe UI", 10, "bold")).pack(side="left", padx=10)
 
-        # Título principal
         tk.Label(header_content, text="Biblioteca CERP del Litoral",
                  font=("Segoe UI", 22, "bold"), bg=self.COLOR_PRINCIPAL, fg=self.COLOR_TEXTO).pack(side="left", padx=15)
 
@@ -72,18 +65,107 @@ class BibliotecaApp:
         tk.Label(self.left_frame, text="Menú", bg=self.COLOR_PRINCIPAL,
                  font=("Segoe UI", 14, "bold"), fg=self.COLOR_TEXTO).pack(pady=15)
 
-        # Estilo de botones: se aplicará a cada botón y se añade hover
         self.estilo_boton = {"width": 18, "height": 2, "bg": self.COLOR_BOTONES, "fg": self.COLOR_TEXTO,
                              "relief": "flat", "font": ("Segoe UI", 11)}
+
+        botones_info = [
+            ("Catálogo", self.mostrar_catalogo),
+            ("Agregar Material", self.abrir_agregar_material),
+            ("Usuarios", self.mostrar_usuarios),
+            ("Agregar Usuario", self.abrir_agregar_usuario),
+            ("Préstamos", self.abrir_prestamo),
+            ("Devoluciones", self.abrir_devolucion),
+        ]
+
+        for text, cmd in botones_info:
+            b = tk.Button(self.left_frame, text=text, command=cmd, **self.estilo_boton)
+            b.pack(pady=8)
+            self._añadir_hover(b)
+
+        b_salir = tk.Button(self.left_frame, text="Guardar y Salir", bg="#ff6666", fg="white",
+                            width=18, height=2, font=("Segoe UI", 11, "bold"), command=self.guardar_y_salir)
+        b_salir.pack(pady=18)
+
+        self.logo_anep = None
+        try:
+            imagen_anep = Image.open(r"resources/images/Logo_ANEP.png").resize((120, 60))
+            self.logo_anep = ImageTk.PhotoImage(imagen_anep)
+            tk.Label(self.left_frame, image=self.logo_anep, bg=self.COLOR_PRINCIPAL).pack(side="bottom", pady=20)
+        except Exception:
+            tk.Label(self.left_frame, text="[ANEP]", bg=self.COLOR_PRINCIPAL, fg=self.COLOR_TEXTO,
+                     font=("Segoe UI", 10, "bold")).pack(side="bottom", pady=20)
+
+        self.main_frame = tk.Frame(self.ventana, bg=self.COLOR_FONDO)
+        self.main_frame.pack(side="right", fill="both", expand=True)
+
+        self.mostrar_catalogo()
+
+    # ---------------- utilidades ----------------
+    def _añadir_hover(self, boton):
+        def on_enter(e):
+            try:
+                boton.configure(bg=self.COLOR_BOTON_HOVER)
+            except Exception:
+                pass
+        def on_leave(e):
+            try:
+                boton.configure(bg=self.COLOR_BOTONES)
+            except Exception:
+                pass
+        boton.bind("<Enter>", on_enter)
+        boton.bind("<Leave>", on_leave)
+
+    def limpiar_main(self):
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+    # ---------------- funciones ----------------
+    def mostrar_catalogo(self):
+        self.limpiar_main()
+        tk.Label(self.main_frame, text="Catálogo de Materiales",
+                 font=("Segoe UI", 16, "bold"), bg=self.COLOR_FONDO).pack(pady=12)
+
+        columnas = ("Referencia", "Tipo", "ISBN/Autor", "Título", "Año", "Ejemplares")
+        tree = ttk.Treeview(self.main_frame, columns=columnas, show="headings", height=20)
+        for col in columnas:
+            tree.heading(col, text=col)
+            tree.column(col, width=130, anchor="center")
+        tree.pack(padx=10, pady=10, fill="both", expand=True)
+
+        for mat in self.sistema.listar_materiales():
+            if isinstance(mat, Libro):
+                tree.insert("", tk.END, values=(mat.referencia, mat.tipo, f"{mat.isbn}/{mat.autor}", mat.titulo, mat.ano, mat.ejemplares_disponibles))
+            else:
+                tree.insert("", tk.END, values=(mat.referencia, mat.tipo, "", mat.titulo, "", mat.ejemplares_disponibles))
+
+    def mostrar_usuarios(self):
+        self.limpiar_main()
+        tk.Label(self.main_frame, text="Usuarios Registrados",
+                 font=("Segoe UI", 16, "bold"), bg=self.COLOR_FONDO).pack(pady=12)
+
+        columnas = ("ID", "Nombre", "Domicilio", "Tipo")
+        tree = ttk.Treeview(self.main_frame, columns=columnas, show="headings", height=20)
+        for col in columnas:
+            tree.heading(col, text=col)
+            tree.column(col, width=180, anchor="center")
+        tree.pack(padx=10, pady=10, fill="both", expand=True)
+
+        for usuario in self.sistema.usuarios.values():
+            tipo = "Estudiante" if isinstance(usuario, Estudiante) else "Profesor"
+            tree.insert("", tk.END, values=(usuario.id_usuario, usuario.nombre, usuario.domicilio, tipo))
+
+    # --- El resto de tus funciones (agregar material/usuario, préstamo, devolución, guardar y salir) se mantienen idénticas ---
+    # ... pegar aquí las funciones abrir_agregar_material, abrir_agregar_usuario, abrir_prestamo, abrir_devolucion, guardar_y_salir
+
 
         # Crear botones y enlazar acciones
         botones_info = [
             ("Catálogo", self.mostrar_catalogo),
             ("Agregar Material", self.abrir_agregar_material),
+            ("Usuarios", self.mostrar_usuarios),
             ("Agregar Usuario", self.abrir_agregar_usuario),
             ("Préstamos", self.abrir_prestamo),
             ("Devoluciones", self.abrir_devolucion),
-            ("Usuarios", self.mostrar_usuarios),
         ]
 
         for text, cmd in botones_info:
