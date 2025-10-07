@@ -1,16 +1,17 @@
 # app.py
-from objetos.biblioteca import SistemaBiblioteca, guardar_materiales, cargar_materiales
+from objetos.biblioteca import SistemaBiblioteca
 from objetos.usuario import Estudiante, Profesor
 from objetos.elemento import Libro, Recursos
+from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
 
+######### AGREGAR VALIDACIONES DESPUES #########
 
 def menu_principal():
     sistema = SistemaBiblioteca()
     cargar_materiales(sistema)  # cargar datos existentes
-
-    sistema.agregar_usuario(Estudiante("EST001", "Ana García", "Tacuarembó 123"))
-    sistema.agregar_usuario(Profesor("PROF001", "Dr. Juan Pérez", "Rivera 456"))
-
+    cargar_usuarios(sistema)
+    print("Bienvenido al Sistema de Gestión de Biblioteca del CeRP")
+    
     while True:
         print("\n" + "="*50)
         print("SISTEMA DE GESTIÓN DE BIBLIOTECA - CeRP")
@@ -35,6 +36,7 @@ def menu_principal():
         elif opcion == "5":
             mostrar_catalogo(sistema)
         elif opcion == "6":
+            guardar_usuarios(sistema)
             guardar_materiales(sistema)
             print("Datos guardados. ¡Hasta luego!")
             break
@@ -136,10 +138,13 @@ def menu_devoluciones(sistema):
 
 def mostrar_catalogo(sistema):
     print("\n--- CATÁLOGO DE MATERIALES ---")
-    for mat in sistema.listar_materiales():
-        print(f"  {mat}")
+    materiales = sistema.listar_materiales()
+
+    if not materiales:
+        print("No hay materiales registrados.")
     else:
-        print("Estos son todos los materiales registrados.")
+        for mat in materiales:
+            print(f"  {mat}")
 
 if __name__ == "__main__":
     menu_principal()

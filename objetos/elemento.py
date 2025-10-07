@@ -15,9 +15,6 @@ class Recursos:
     def get_titulo(self): # para recursos genéricos, el título es el tipo 
         return self.__tipo  # el tipo como clave de búsqueda/ordenamiento para el arbolito
     
-    def get_id_unico(self): # solucion para identificar cada recurso unico en el prestamo
-        return self.__referencia
-    
     def get_referencia(self):
         return self.__referencia
     
@@ -71,15 +68,12 @@ class Libro(Recursos):
         return f"{base_str}, ISBN: {self.__isbn}, Título: {self.__titulo}, Autor: {self.__autor}, Año de publicación: {self.__año_publicacion}"
     
     # atributos especificos del libro
-    def get_id_unico(self):
-        return self.get_isbn()  # usamos el ISBN como identificador único para libros
-    
-    def get_isbn(self):
-        return self.__isbn
-    
     def get_titulo(self):
         return self.__titulo  
-    
+
+    def get_isbn(self):
+        return self.__isbn
+
     def get_autor(self):
         return self.__autor 
     

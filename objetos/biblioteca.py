@@ -1,5 +1,4 @@
-# objetos/biblioteca.py 
-from  .nodo_arbol import ArbolBinario
+from .nodo_arbol import ArbolBinario
 from objetos.elemento import Libro, Recursos
 
 class Prestamo:
@@ -25,16 +24,16 @@ class Prestamo:
     def esta_activo(self):
         return self.__activo
     
-    def finalizar(self):
+    def finalizar(self): # para marcar el préstamo como finalizado
         self.__activo = False
 
 
 class SistemaBiblioteca:
     def __init__(self):
-        self.arbol_materiales = None  # Importar ArbolBinario
+        self.arbol_materiales = None  
         self.usuarios = {}  # id -> objeto Usuario
         self.prestamos = []
-        self.reservas = {}  # isbn -> lista de ids de usuarios
+        self.reservas = {}  # id_material -> lista de ids de usuarios
         self.contador_prestamos = 1
     
     def agregar_material(self, material):
@@ -52,29 +51,26 @@ class SistemaBiblioteca:
     
     def realizar_prestamo(self, id_usuario, titulo_material):
         if id_usuario not in self.usuarios:
-            return False, "El usuario no existe"
+            return False, "Error en los datos ingresados. El usuario no existe."
         
         usuario = self.usuarios[id_usuario]
         
-        if not usuario.estado_activo():         # verificar si esta activo
-            return False, "Usuario suspendido"
+        if not usuario.estado_activo():
+            return False, "Usuario suspendido. No puede realizar préstamos."
         
-    
-        material = self.buscar_material(titulo_material)     # buscar material
+        material = self.buscar_material(titulo_material)
         if material is None:
-            return False, "Material no encontrado"
+            return False, "Material no encontrado."
         
-        
-        if not material.hay_disponibles():         # verificar disponibilidad
-            return False, "Material no disponible"
+        if not material.hay_disponibles():
+            return False, "Material no disponible para préstamo."
         
         if len(usuario.get_material_prestado()) >= usuario.get_limite_prestamos():
-            return False, "Límite de préstamos alcanzado" # verificar límite de prestamos
+            return False, "Límite de préstamos alcanzado para este tipo de usuario."
+        
+        if material.prestar():
+            usuario.prestar_material(material.get_titulo()) 
 
-    
-        if material.prestar():      # realizar prestamo
-            id_material_prestado = material.get_id_unico()
-            usuario.prestar_material(id_material_prestado)
             prestamo = Prestamo(
                 f"P{self.contador_prestamos:04d}",
                 usuario,
@@ -82,36 +78,38 @@ class SistemaBiblioteca:
                 usuario.get_dias_prestamo()
             )
             self.prestamos.append(prestamo)
+            
             self.contador_prestamos += 1
-            return True, "Préstamo exitoso" 
+            return True, "Préstamo exitoso." 
         
-        return False, "Error al prestar"
-    
+        return False, "Error al prestar el material."
+
     def realizar_devolucion(self, id_usuario, titulo_material):
+        """Procesa la devolución de un material por parte de un usuario."""
         usuario = self.usuarios.get(id_usuario)
         if usuario is None:
-            return False, "Usuario no encontrado"
+            return False, "Usuario no encontrado."
         
         material = self.buscar_material(titulo_material)
         if material is None:
-            return False, "Material no encontrado"
+            return False, "Material no encontrado."
         
-        id_material_unico = material.get_id_unico()
+        titulo_identificador = material.get_titulo()
 
-        # Buscar préstamo activo
         for prestamo in self.prestamos:
             if (prestamo.esta_activo() and 
                 prestamo.get_usuario().get_id() == id_usuario and
                 prestamo.get_material().get_titulo() == titulo_material):
                 
                 material.devolver()
-                usuario.devolver_material(id_material_unico)
+                usuario.devolver_material(titulo_identificador) 
                 prestamo.finalizar()
-                return True, "Devolución exitosa"
+                return True, "Devolución exitosa."
         
-        return False, "Préstamo no encontrado"
+        return False, "Préstamo activo no encontrado para este usuario y material."
     
-  ###  def crear_reserva(self, id_usuario, isbn):
+    def crear_reserva(self, id_usuario, isbn):
+        """Permite a un usuario crear una reserva para un material."""
         if isbn not in self.reservas:
             self.reservas[isbn] = []
         if id_usuario not in self.reservas[isbn]:
@@ -120,80 +118,7 @@ class SistemaBiblioteca:
         return False
     
     def listar_materiales(self):
+        """Devuelve una lista de todos los materiales en orden alfabético por título/tipo."""
         if self.arbol_materiales is None:
             return []
         return self.arbol_materiales.listar_todos()
-
-# persistencia de archivos (temporal revisar)
-
-def guardar_materiales(sistema, archivo="resources/data/materiales.txt"):
-    with open(archivo, "w") as f:
-        materiales = sistema.listar_materiales()
-        for mat in materiales:
-            if hasattr(mat, 'get_isbn'):  # Es un Libro
-                linea = f"{mat.get_referencia()}|{mat.get_tipo()}|{mat.get_isbn()}|{mat.get_titulo()}|{mat.get_autor()}|{mat.get_año_publicacion()}|{mat.get_ejemplares_totales()}|{mat.get_ejemplares_disponibles()}\n"
-            else:  # Es un Recurso genérico
-                linea = f"{mat.get_referencia()}|{mat.get_tipo()}|{mat.get_ejemplares_totales()}|{mat.get_ejemplares_disponibles()}\n"
-            f.write(linea)
-
-def cargar_materiales(sistema, archivo="resources/data/materiales.txt"):
-    try:
-        with open(archivo, "r") as f:
-            for linea in f:
-                partes = linea.strip().split("|")
-                if len(partes) == 8:  # Libro
-                    from objetos.elemento import Libro
-                    libro = Libro(partes[0], partes[1], partes[2], partes[3], 
-                                  partes[4], int(partes[5]), int(partes[6]), int(partes[7]))
-                    sistema.agregar_material(libro)
-    except FileNotFoundError:
-        raise print("Archivo de materiales no encontrado. Iniciando con catálogo vacío.")
-
-
-
-if __name__ == "__main__":
-    from elemento import Libro
-    from usuario import Estudiante, Profesor
-    
-    sistema = SistemaBiblioteca()
-    
-    # Crear materiales
-    libro1 = Libro("REF001", "Libro", "978-123", "Cien años de soledad", "García Márquez", 1967, 2, 2)
-    libro2 = Libro("REF002", "Libro", "978-456", "El Principito", "Saint-Exupéry", 1943, 1, 1)
-    libro3 = Libro("REF003", "Libro", "978-789", "1984", "George Orwell", 1949, 3, 3)
-    
-    sistema.agregar_material(libro1)
-    sistema.agregar_material(libro2)
-    sistema.agregar_material(libro3)
-    
-    # Crear usuarios
-    estudiante = Estudiante("EST001", "Ana García", "Tacuarembó 123")
-    profesor = Profesor("PROF001", "Dr. Juan Pérez", "Rivera 456")
-    
-    sistema.agregar_usuario(estudiante)
-    sistema.agregar_usuario(profesor)
-    
-    print("=== SISTEMA DE BIBLIOTECA ===")
-    print(f"\nMateriales disponibles:")
-    for mat in sistema.listar_materiales():
-        print(f"  - {mat}")
-    
-    # Préstamo exitoso
-    print(f"\n--- Préstamo 1 ---")
-    exito, msg = sistema.realizar_prestamo("EST001", "El Principito")
-    print(f"Resultado: {msg}")
-    
-    # Buscar material
-    print(f"\n--- Búsqueda ---")
-    encontrado = sistema.buscar_material("1984")
-    print(f"Buscando '1984': {encontrado}")
-    
-    # Devolución
-    print(f"\n--- Devolución ---")
-    exito, msg = sistema.realizar_devolucion("EST001", "El Principito")
-    print(f"Resultado: {msg}")
-    
-    # Guardar datos
-    print(f"\n--- Guardando en archivo ---")
-    guardar_materiales(sistema)
-    print("Datos guardados en resources/data/materiales.txt")
