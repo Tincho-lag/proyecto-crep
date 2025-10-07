@@ -1,5 +1,7 @@
+import os
 import sys
-sys.path.append("C:/Users/adria/Desktop/proyecto-crep")
+# Calcula la ruta del directorio raíz del proyecto dinámicamente
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import tkinter as tk
 from tkinter import messagebox
 from objetos.biblioteca import SistemaBiblioteca

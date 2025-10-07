@@ -98,13 +98,15 @@ class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar presta
 #├── app.py                      # Archivo principal para ejecutar test (en desuso)
 #├── resources/              # Carpeta para recursos estáticos # Imágenes, íconos, etc.
 #│   ├────── data/                 # Carpeta para almacenar archivos de datos
+#│             ├────── usuarios.txt
+#│             ├────── materiales.txt
 #│   ├────── images/               # Carpeta para imágenes e iconos
 #├── gui/                    # Carpeta para la interfaz gráfica # Tkinter  Parte Martin 
 #├── notas                 # Carpeta para notas y documentación 
 #│   ├── diagramas/              # Carpeta para diagramas UML y otros
 #│   ├── notas.txt              # Notas del proyecto
 #├── tests/                  # Carpeta para pruebas unitarias
-#│   ├── test_biblioteca.py      # Pruebas para la clase
+#│   ├── prueba_interfaz.py      # Pruebas para la clase
 #└── README.TXT               # Documentación del proyecto
 #└── requirements.txt        # Dependencias del proyecto
 
