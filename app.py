@@ -22,9 +22,14 @@ def menu_principal():
         print("4. Devoluciones")
         print("5. Consultar Catálogo")
         print("6. Guardar y Salir")
-        
-        opcion = input("\nSeleccione opción: ")
-        
+     # validaciones de entrada    
+        opciones_validas = {"1","2","3","4","5","6"}
+        opcion = ""
+        while opcion not in opciones_validas:
+            opcion = input("\nSeleccione opción: ")
+            if opcion not in opciones_validas:
+                print("opcion invalida. Intente nuevamente. ")
+
         if opcion == "1":
             menu_materiales(sistema)
         elif opcion == "2":
@@ -49,7 +54,12 @@ def menu_materiales(sistema):
     print("2. Agregar Recurso (genérico, ej: Cargador , Revista, Comic etc)")
     print("3. Listar todos")
     print("4. Buscar por titulo/tipo")
-    opcion = input("Opción: ")
+    opciones_validas = {"1","2","3","4"}
+    opcion = ""
+    while opcion not in opciones_validas:
+        opcion = input("Opcion: ")
+    if opcion not in opciones_validas:
+                print("opcion invalida. Intente nuevamente. ")
     
     if opcion == "1":
         try:
