@@ -76,7 +76,7 @@ def menu_materiales(sistema):
             print("Error en los datos ingresados. Intente nuevamente.")
         print(" Libro agregado")
 
-    elif opcion == "2": # agregar Recurso Genérico
+    elif opcion == "2": 
         try:
             ref = input("Referencia (ej: REC001): ")
             tipo = input("Tipo de Recurso (ej: Cargador USB, Alargue): ")

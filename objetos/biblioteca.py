@@ -24,9 +24,6 @@ class Prestamo:
     def esta_activo(self):
         return self.__activo
     
-    def finalizar(self): # para marcar el préstamo como finalizado
-        self.__activo = False
-
 
 class SistemaBiblioteca:
     def __init__(self):
@@ -72,7 +69,7 @@ class SistemaBiblioteca:
             usuario.prestar_material(material.get_titulo()) 
 
             prestamo = Prestamo(
-                f"P{self.contador_prestamos:04d}",
+                f"P{self.contador_prestamos:}",
                 usuario,
                 material,
                 usuario.get_dias_prestamo()
@@ -107,15 +104,6 @@ class SistemaBiblioteca:
                 return True, "Devolución exitosa."
         
         return False, "Préstamo activo no encontrado para este usuario y material."
-    
-    def crear_reserva(self, id_usuario, isbn):
-        """Permite a un usuario crear una reserva para un material."""
-        if isbn not in self.reservas:
-            self.reservas[isbn] = []
-        if id_usuario not in self.reservas[isbn]:
-            self.reservas[isbn].append(id_usuario)
-            return True
-        return False
     
     def listar_materiales(self):
         """Devuelve una lista de todos los materiales en orden alfabético por título/tipo."""
