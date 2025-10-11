@@ -70,8 +70,7 @@ def menu_materiales(sistema):
     opcion = ""
     while opcion not in opciones_validas:
         opcion = input("Opcion: ")
-    if opcion not in opciones_validas:
-                print("opcion invalida. Intente nuevamente. ")
+        print("opcion invalida. Intente nuevamente. ")
     
     if opcion == "1":
         try:
