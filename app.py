@@ -24,9 +24,10 @@ def menu_principal():
         print("3. Préstamos")
         print("4. Devoluciones")
         print("5. Consultar Catálogo")
-        print("6. Guardar y Salir")
+        print("6. Usuarios en cola de espera")
+        print("7. Guardar y Salir")
      # validaciones de entrada    
-        opciones_validas = {"1","2","3","4","5","6"}
+        opciones_validas = {"1","2","3","4","5","6","7"}
         opcion = ""
         while opcion not in opciones_validas:
             opcion = input("\nSeleccione opción: ")
@@ -44,6 +45,14 @@ def menu_principal():
         elif opcion == "5":
             mostrar_catalogo(sistema)
         elif opcion == "6":
+            print("\n--- Reservas ---")
+            if not reservas:
+                print("No hay reservas activas.")
+            else:
+                for titulo, cola in reservas.items():
+                    print(f"Titulo/Material: {titulo}, en {cola}")
+                    
+        elif opcion == "7":
             guardar_usuarios(sistema)
             guardar_materiales(sistema)
             print("Datos guardados. ¡Hasta luego!")
@@ -141,7 +150,7 @@ def menu_prestamos(sistema):
     exito, msg = sistema.realizar_prestamo(id_usuario, titulo)
     print(f"Resultado: {msg}")
     
-    if not exito and "no disponible"in mag.lower():
+    if not exito and "no disponible"in msg.lower():
         if titulo not in reservas:
             reservas[titulo] = Cola()
 
@@ -149,7 +158,7 @@ def menu_prestamos(sistema):
         if not cola.contiene(id_usuario):
             cola. encolar(id_usuario)
             print(f"No hay ejemplares disponibles. El usuario fue agregado a la cola de espera")
-            print(f"Posición en la cola: {cola.tamaño()}")
+            print(f"Posición en la cola: {cola.tamanio()}")
         else:
             print("el usuario ya está en la cola de espera para este material.")
             
@@ -160,6 +169,15 @@ def menu_devoluciones(sistema):
 
     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
+    
+    if titulo in reservas and not reservas [titulo].estaVacia():
+        siguiente_usuario = reservas[titulo].desencolar()
+        print(f"El siguiente usuario en la cola es: {siguiente_usuario}")
+        exito, msg2 = sistema.realizar_prestamo(siguiente_usuario, titulo)
+        print(f"Resultado del préstamo al siguiente usuario: {msg2}")
+        
+        if reservas[titulo].estaVacia():
+            del reservas[titulo]
 
 def mostrar_catalogo(sistema):
     print("\n--- CATÁLOGO DE MATERIALES ---")
