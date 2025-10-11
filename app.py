@@ -3,6 +3,9 @@ from objetos.biblioteca import SistemaBiblioteca
 from objetos.usuario import Estudiante, Profesor
 from objetos.elemento import Libro, Recursos
 from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
+from objetos.utilidades import Cola
+
+reservas = {}  # Diccionario para manejar las colas de reservas
 
 ######### AGREGAR VALIDACIONES DESPUES #########
 
@@ -137,7 +140,19 @@ def menu_prestamos(sistema):
     
     exito, msg = sistema.realizar_prestamo(id_usuario, titulo)
     print(f"Resultado: {msg}")
+    
+    if not exito and "no disponible"in mag.lower():
+        if titulo not in reservas:
+            reservas[titulo] = Cola()
 
+        cola = reservas[titulo]
+        if not cola.contiene(id_usuario):
+            cola. encolar(id_usuario)
+            print(f"No hay ejemplares disponibles. El usuario fue agregado a la cola de espera")
+            print(f"Posición en la cola: {cola.tamaño()}")
+        else:
+            print("el usuario ya está en la cola de espera para este material.")
+            
 def menu_devoluciones(sistema):
     print("\n--- REALIZAR DEVOLUCIÓN ---")
     id_usuario = input("ID del usuario: ")
@@ -155,6 +170,7 @@ def mostrar_catalogo(sistema):
     else:
         for mat in materiales:
             print(f"  {mat}")
+
 
 if __name__ == "__main__":
     menu_principal()
