@@ -1,5 +1,6 @@
 # objetos/utilidades.py
 from objetos.usuario import Estudiante, Profesor
+from collections import deque
 
 # utilidades para guardar y cargar materiales
 def guardar_materiales(sistema, archivo="resources/data/materiales.txt"):
@@ -66,3 +67,48 @@ def cargar_usuarios(sistema, archivo="resources/data/usuarios.txt"):
     except FileNotFoundError:
         print("Archivo de usuarios no encontrado. Iniciando con usuarios vacíos.")
 
+class Cola:#se implementa la cola para manejar la reserva
+    def __init__(self):
+        self.__items = deque()
+
+    def estaVacia(self):#Esto verifica si la lista esta vacía, si el valor es igual a 0 devuelve true(que significa que la cola esta vacía)
+        return len(self.__items) == 0
+
+    def encolar(self, item):#Agrega un usuario al final de la cola
+        self.__items.append(item)
+
+    def desencolar(self):#Elimina el primero que esta en la lista
+        if self.estaVacia():
+            raise IndexError("La cola está vacía")
+        return self.__items.popleft()
+
+    def verFrente(self):#Muesta el primero que esta en la lista
+        if self.estaVacia():
+            raise IndexError("La cola está vacía")
+        return self.__items[0]
+
+    def verFinal(self):#Muestra el último de la lista
+        if self.estaVacia():
+            raise IndexError("La cola está vacía")
+        return self.__items[-1]
+
+    def tamanio(self):#Mestra el tamaño de la lista
+        return len(self.__items)
+
+    def contiene(self, item):# recorre toda la lista hasta encontrar el usuario que le pediste
+        return item in self.__items
+
+    def limpiar(self):#Vacia la lista completamente
+        self.__items.clear()
+
+    def invertir(self):#Invierte la lista
+        self.__items.reverse()
+
+    def toLista(self):#muestra la lista en el orden que los agregaste
+        return list(self.__items)
+
+    def encolarFrente(self, item):# esto se usa para llevar a alguien al frente de la lista
+        self.__items.appendleft(item)
+
+    def __str__(self):#esto muestra todo el contenido de la lista
+        return "Cola: [" + ", ".join(map(str, self.__items)) + "]"
