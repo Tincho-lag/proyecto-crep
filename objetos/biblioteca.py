@@ -28,7 +28,7 @@ class Prestamo:
     def get_dias_prestamo(self):
         return self.__dias_prestamo
     
-    def get_fecha_vensimiento(self):
+    def get_fecha_vencimiento(self):
         return self.__fecha_vencimiento
     
     def get_fecha_devolucion(self):
@@ -38,8 +38,8 @@ class Prestamo:
         self.__activo = False
         self.__fecha_devolucion = datetime.now()
     
- #  """ def esta_activo(self):
-  #      return self.__activo"""
+    def esta_activo(self):
+        return self.__activo    
     
 
 class SistemaBiblioteca:
@@ -119,12 +119,13 @@ class SistemaBiblioteca:
                 usuario.devolver_material(titulo_identificador) 
                 prestamo.finalizar()
                 
+                
 #Calcula los dias de retraso
-                fecha_ven = prestamo.get_fecha_vensimiento()
+                fecha_ven = prestamo.get_fecha_vencimiento()
                 fecha_dev = prestamo.get_fecha_devolucion()
                 dias_retraso = (fecha_dev - fecha_ven).dias
                 if dias_retraso > 0:
-                    dias_suspension = min(30,dias_retraso * 2) #Dos dia de suspension por cada dia de retraso, maximo 30 dias
+                    dias_suspension = min(30,dias_retraso * 2) #Dos dia de suspension por cada dia de retraso, hasta 30 dias
                     usuario.suspender(dias_suspension)
                     return True, f"Devolucion exitosa. Hubo un retraso de {dias_retraso} dias. El usuario sera suspendido por {dias_suspension} dias."
                 

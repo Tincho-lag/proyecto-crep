@@ -146,9 +146,15 @@ def menu_prestamos(sistema):
     id_usuario = input("ID del usuario: ")
     titulo = input("Titulo o Tipo del material: ")
     
-    exito, msg = sistema.realizar_prestamo(id_usuario, titulo)
+    exito, msg, prestamo = sistema.realizar_prestamo(id_usuario, titulo)
     print(f"Resultado: {msg}")
-    
+
+#si se realizo bien el prestamo mostrara la fecha
+    if exito and prestamo is not None:
+        print(f"Fecha de venciminto del prestamo: {prestamo.fecha_prestamo}")
+        print(f"fecha estimada de devolucion: {prestamo.fecha_devolucion}")     
+        
+ #cola de espera si no hay ejemplares disponibles  
     if not exito and "no disponible"in msg.lower():
         if titulo not in reservas:
             reservas[titulo] = Cola()
@@ -161,13 +167,17 @@ def menu_prestamos(sistema):
         else:
             print("el usuario ya está en la cola de espera para este material.")
             
+            
 def menu_devoluciones(sistema):
     print("\n--- REALIZAR DEVOLUCIÓN ---")
     id_usuario = input("ID del usuario: ")
     titulo = input("Titulo o Tipo del material: ")
 
-    exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
+    exito, msg, fecha_devolucion = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
+    
+    if exito:
+        print(f"fecha de devolucion:",{fecha_devolucion})
     
     if titulo in reservas and not reservas [titulo].estaVacia():
         siguiente_usuario = reservas[titulo].desencolar()
