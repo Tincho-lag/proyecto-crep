@@ -28,6 +28,9 @@ class Prestamo:
     def get_dias_prestamo(self):
         return self.__dias_prestamo
     
+    def get_fecha_prestamo(self):
+        return self.__fecha_prestamo
+    
     def get_fecha_vencimiento(self):
         return self.__fecha_vencimiento
     
@@ -94,7 +97,7 @@ class SistemaBiblioteca:
             self.prestamos.append(prestamo)
             
             self.contador_prestamos += 1
-            return True, "Préstamo exitoso." 
+            return True, "Préstamo exitoso.", prestamo
         
         return False, "Error al prestar el material."
 
@@ -123,7 +126,7 @@ class SistemaBiblioteca:
 #Calcula los dias de retraso
                 fecha_ven = prestamo.get_fecha_vencimiento()
                 fecha_dev = prestamo.get_fecha_devolucion()
-                dias_retraso = (fecha_dev - fecha_ven).dias
+                dias_retraso = (fecha_dev - fecha_ven).days
                 if dias_retraso > 0:
                     dias_suspension = min(30,dias_retraso * 2) #Dos dia de suspension por cada dia de retraso, hasta 30 dias
                     usuario.suspender(dias_suspension)

@@ -151,8 +151,8 @@ def menu_prestamos(sistema):
 
 #si se realizo bien el prestamo mostrara la fecha
     if exito and prestamo is not None:
-        print(f"Fecha de venciminto del prestamo: {prestamo.fecha_prestamo}")
-        print(f"fecha estimada de devolucion: {prestamo.fecha_devolucion}")     
+        print(f"Fecha de préstamo: {prestamo.get_fecha_prestamo().strftime('%d/%m/%Y %H:%M')}")
+        print(f"Fecha estimada de devolución: {prestamo.get_fecha_vencimiento().strftime('%d/%m/%Y')}")    
         
  #cola de espera si no hay ejemplares disponibles  
     if not exito and "no disponible"in msg.lower():
