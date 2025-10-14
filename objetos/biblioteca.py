@@ -1,5 +1,7 @@
 from .nodo_arbol import ArbolBinario
 from objetos.elemento import Libro, Recursos
+from datetime import datetime, timedelta
+
 
 class Prestamo:
     def __init__(self, id_prestamo, usuario, material, dias_prestamo):
@@ -8,6 +10,11 @@ class Prestamo:
         self.__material = material
         self.__dias_prestamo = dias_prestamo
         self.__activo = True
+        
+        #facha de devolucion y vencimiento
+        self.__fecha_prestamo = datetime.now()
+        self.__fecha_vencimiento = self.__fecha_prestamo + timedelta(days=dias_prestamo)
+        self.__fecha_devolucion = None
 
     def get_id_prestamo(self):
         return self.__id_prestamo
@@ -21,8 +28,18 @@ class Prestamo:
     def get_dias_prestamo(self):
         return self.__dias_prestamo
     
-    def esta_activo(self):
-        return self.__activo
+    def get_fecha_vensimiento(self):
+        return self.__fecha_vencimiento
+    
+    def get_fecha_devolucion(self):
+        return self.__fecha_devolucion 
+    
+    def finalizar(self):# Cuando el usuario hace una devolucion de registra la fecha en la que devolvio
+        self.__activo = False
+        self.__fecha_devolucion = datetime.now()
+    
+ #  """ def esta_activo(self):
+  #      return self.__activo"""
     
 
 class SistemaBiblioteca:
@@ -101,6 +118,16 @@ class SistemaBiblioteca:
                 material.devolver()
                 usuario.devolver_material(titulo_identificador) 
                 prestamo.finalizar()
+                
+#Calcula los dias de retraso
+                fecha_ven = prestamo.get_fecha_vensimiento()
+                fecha_dev = prestamo.get_fecha_devolucion()
+                dias_retraso = (fecha_dev - fecha_ven).dias
+                if dias_retraso > 0:
+                    dias_suspension = min(30,dias_retraso * 2) #Dos dia de suspension por cada dia de retraso, maximo 30 dias
+                    usuario.suspender(dias_suspension)
+                    return True, f"Devolucion exitosa. Hubo un retraso de {dias_retraso} dias. El usuario sera suspendido por {dias_suspension} dias."
+                
                 return True, "Devolución exitosa."
         
         return False, "Préstamo activo no encontrado para este usuario y material."
