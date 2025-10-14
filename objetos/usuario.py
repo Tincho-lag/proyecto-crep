@@ -1,4 +1,5 @@
 # objetos/usuario.py
+from datetime import date, timedelta
 class Administrador:  
 # hacer despues (no usado por ahora) se supone que  
 # solo esta clase puede agregar o eliminar usuarios 
@@ -47,10 +48,24 @@ class Usuario:
             self.__material_prestado.remove(isbn)
     
     def estado_activo(self):
+        if self.__estado == "activo":
+            return True
+        if self.__estado == "suspendido" and self.__fecha_fin_suspension:
+            try:
+                if date.today()>=self.__fecha_fin_suspension:
+                    self.reactivar()
+                    return True
+            except Exception:
+                pass
         return self.__estado == "activo"
+    
     
     def suspender(self, dias):
         self.__estado = "suspendido" 
+        if dias and dias > 0:
+            self.__fecha_fin_suspension = date.today() + timedelta(days=dias)
+        else:
+            self.__fecha_fin_suspencion = None  # suspensión indefinida
 
     def reactivar(self):
         self.__estado = "activo"

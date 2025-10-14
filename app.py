@@ -173,12 +173,11 @@ def menu_devoluciones(sistema):
     id_usuario = input("ID del usuario: ")
     titulo = input("Titulo o Tipo del material: ")
 
-    exito, msg, fecha_devolucion = sistema.realizar_devolucion(id_usuario, titulo)
+    exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
     
-    if exito:
-        print(f"fecha de devolucion:",{fecha_devolucion})
-    
+ #   if exito:
+ #       print(f"fecha de devolucion:",{fecha_devolucion})
     if titulo in reservas and not reservas [titulo].estaVacia():
         siguiente_usuario = reservas[titulo].desencolar()
         print(f"El siguiente usuario en la cola es: {siguiente_usuario}")

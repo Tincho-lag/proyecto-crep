@@ -105,11 +105,11 @@ class SistemaBiblioteca:
         """Procesa la devolución de un material por parte de un usuario."""
         usuario = self.usuarios.get(id_usuario)
         if usuario is None:
-            return False, "Usuario no encontrado."
+            return False, "Usuario no encontrado.",None
         
         material = self.buscar_material(titulo_material)
         if material is None:
-            return False, "Material no encontrado."
+            return False, "Material no encontrado.", None
         
         titulo_identificador = material.get_titulo()
 
@@ -124,8 +124,8 @@ class SistemaBiblioteca:
                 
                 
 #Calcula los dias de retraso
-                fecha_ven = prestamo.get_fecha_vencimiento()
                 fecha_dev = prestamo.get_fecha_devolucion()
+                fecha_ven = prestamo.get_fecha_vencimiento()
                 dias_retraso = (fecha_dev - fecha_ven).days
                 if dias_retraso > 0:
                     dias_suspension = min(30,dias_retraso * 2) #Dos dia de suspension por cada dia de retraso, hasta 30 dias
@@ -134,7 +134,7 @@ class SistemaBiblioteca:
                 
                 return True, "Devolución exitosa."
         
-        return False, "Préstamo activo no encontrado para este usuario y material."
+        return False, "Préstamo activo no encontrado para este usuario y material.",None
     
     def listar_materiales(self):
         """Devuelve una lista de todos los materiales en orden alfabético por título/tipo."""
