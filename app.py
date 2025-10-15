@@ -178,6 +178,7 @@ def menu_devoluciones(sistema):
     
  #   if exito:
  #       print(f"fecha de devolucion:",{fecha_devolucion})
+ 
     if titulo in reservas and not reservas [titulo].estaVacia():
         siguiente_usuario = reservas[titulo].desencolar()
         print(f"El siguiente usuario en la cola es: {siguiente_usuario}")

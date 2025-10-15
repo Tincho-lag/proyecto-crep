@@ -1,7 +1,7 @@
 from .nodo_arbol import ArbolBinario
 from objetos.elemento import Libro, Recursos
 from datetime import datetime, timedelta
-
+from objetos.utilidades import Cola
 
 class Prestamo:
     def __init__(self, id_prestamo, usuario, material, dias_prestamo):
@@ -80,7 +80,8 @@ class SistemaBiblioteca:
             return False, "Material no encontrado."
         
         if not material.hay_disponibles():
-            return False, "Material no disponible para préstamo."
+            return False, "Material no disponible para préstamo.", None
+                
         
         if len(usuario.get_material_prestado()) >= usuario.get_limite_prestamos():
             return False, "Límite de préstamos alcanzado para este tipo de usuario."
@@ -120,8 +121,7 @@ class SistemaBiblioteca:
                 
                 material.devolver()
                 usuario.devolver_material(titulo_identificador) 
-                prestamo.finalizar()
-                
+                prestamo.finalizar()        
                 
 #Calcula los dias de retraso
                 fecha_dev = prestamo.get_fecha_devolucion()
@@ -132,9 +132,32 @@ class SistemaBiblioteca:
                     usuario.suspender(dias_suspension)
                     return True, f"Devolucion exitosa. Hubo un retraso de {dias_retraso} dias. El usuario sera suspendido por {dias_suspension} dias."
                 
-                return True, "Devolución exitosa."
+                if titulo_material in self.reservas and not self.reservas[titulo_material].estaVacia():
+                    siguiente_id_usuario = self.reservas[titulo_material].desencolar()
+                    exito_prestamo, msg_prestamo, nuevo_prestamo = self.realizar_prestamo(siguiente_id_usuario, titulo_material)
+
+                    if exito_prestamo:
+                        mensaje = (
+                            f"Devolución exitosa. "
+                            f"El material fue asignado automáticamente al usuario {siguiente_id_usuario} "
+                            f"de la cola de espera."
+                     )
+                else:
+                    mensaje = (
+                        f"Devolución exitosa, pero no se pudo asignar el material al siguiente usuario. "
+                        f"Motivo: {msg_prestamo}"
+                    )
+
+    # Si la cola quedó vacía, eliminarla
+                if self.reservas[titulo_material].estaVacia():
+                    del self.reservas[titulo_material]
+
+                return True, mensaje, prestamo.get_fecha_devolucion()
+
+# Si no hay cola
+        return True, "Devolución exitosa.", prestamo.get_fecha_devolucion()
         
-        return False, "Préstamo activo no encontrado para este usuario y material.",None
+     
     
     def listar_materiales(self):
         """Devuelve una lista de todos los materiales en orden alfabético por título/tipo."""
