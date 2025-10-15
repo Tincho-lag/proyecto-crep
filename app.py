@@ -1,4 +1,3 @@
-# app.py
 from objetos.biblioteca import SistemaBiblioteca
 from objetos.usuario import Estudiante, Profesor
 from objetos.elemento import Libro, Recursos
@@ -110,7 +109,6 @@ def menu_materiales(sistema):
         else:
             print("Material no encontrado.")
 
-        
 def menu_usuarios(sistema):
     print("\n--- GESTIÓN DE USUARIOS ---")
     print("1. Agregar Estudiante")
@@ -128,7 +126,7 @@ def menu_usuarios(sistema):
         if opcion == "1":
             nuevo_usuario = Estudiante(id_usuario , nombre, domicilio)
         else:
-           nuevo_usuario = Profesor(id_usuario , nombre, domicilio)
+            nuevo_usuario = Profesor(id_usuario , nombre, domicilio)
     
         sistema.agregar_usuario(nuevo_usuario)
         print(f" {tipo} '{nombre}' agregado.")
@@ -158,7 +156,6 @@ def menu_prestamos(sistema):
     if not exito and "no disponible"in msg.lower():
         if titulo not in reservas:
             reservas[titulo] = Cola()
-
         cola = reservas[titulo]
         if not cola.contiene(id_usuario):
             cola. encolar(id_usuario)
@@ -166,7 +163,6 @@ def menu_prestamos(sistema):
             print(f"Posición en la cola: {cola.tamanio()}")
         else:
             print("el usuario ya está en la cola de espera para este material.")
-            
             
 def menu_devoluciones(sistema):
     print("\n--- REALIZAR DEVOLUCIÓN ---")
@@ -176,17 +172,24 @@ def menu_devoluciones(sistema):
     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"Resultado: {msg}")
     
- #   if exito:
- #       print(f"fecha de devolucion:",{fecha_devolucion})
-    if titulo in reservas and not reservas [titulo].estaVacia():
+    # SOLO procesar reservas si la devolución FUE EXITOSA
+    if not exito:
+        return  # ← Salir si falló la devolución
+    
+    # Ahora sí, procesar la cola de reservas
+    if titulo in reservas and not reservas[titulo].estaVacia():
         siguiente_usuario = reservas[titulo].desencolar()
-        print(f"El siguiente usuario en la cola es: {siguiente_usuario}")
-        exito, msg2 = sistema.realizar_prestamo(siguiente_usuario, titulo)
-        print(f"Resultado del préstamo al siguiente usuario: {msg2}")
+        print(f"\n✓ Material disponible para el siguiente en la cola: {siguiente_usuario}")
+        
+        exito_reserva, msg_reserva, prestamo_reserva = sistema.realizar_prestamo(siguiente_usuario, titulo)
+        print(f"Resultado del préstamo automático: {msg_reserva}")
+        
+        if exito_reserva and prestamo_reserva is not None:
+            print(f"Fecha de préstamo: {prestamo_reserva.get_fecha_prestamo().strftime('%d/%m/%Y %H:%M')}")
+            print(f"Fecha estimada de devolución: {prestamo_reserva.get_fecha_vencimiento().strftime('%d/%m/%Y')}")
         
         if reservas[titulo].estaVacia():
             del reservas[titulo]
-
 def mostrar_catalogo(sistema):
     print("\n--- CATÁLOGO DE MATERIALES ---")
     materiales = sistema.listar_materiales()
@@ -196,7 +199,6 @@ def mostrar_catalogo(sistema):
     else:
         for mat in materiales:
             print(f"  {mat}")
-
 
 if __name__ == "__main__":
     menu_principal()

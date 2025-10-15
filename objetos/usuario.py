@@ -63,7 +63,7 @@ class Usuario:
     def suspender(self, dias):
         self.__estado = "suspendido" 
         if dias and dias > 0:
-            self.__fecha_fin_suspension = date.today() + timedelta(days=dias)
+            self.__fecha_fin_suspension = date.today() + timedelta(days=1)
         else:
             self.__fecha_fin_suspencion = None  # suspensión indefinida
 
