@@ -66,6 +66,12 @@ def cargar_usuarios(sistema, archivo="resources/data/usuarios.txt"):
                     sistema.agregar_usuario(usuario)
     except FileNotFoundError:
         print("Archivo de usuarios no encontrado. Iniciando con usuarios vacíos.")
+        
+def registrar_historial(accion, usuario, material, archivo="resources/data/historial.txt"):
+    from datetime import datetime
+    with open(archivo, "a") as f:
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M')} | {accion} | {usuario.get_id()} | {material.get_titulo()}\n")
+
 
 class Cola:#se implementa la cola para manejar la reserva
     def __init__(self):
