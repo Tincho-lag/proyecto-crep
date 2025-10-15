@@ -73,44 +73,7 @@ class SistemaBiblioteca:
         usuario = self.usuarios[id_usuario]
         
         if not usuario.estado_activo():
-<<<<<<< HEAD
             return False, "Usuario suspendido. No puede realizar préstamos.", None
-=======
-            return False, "Usuario suspendido. No puede realizar préstamos."
-        
-        material = self.buscar_material(titulo_material)
-        if material is None:
-            return False, "Material no encontrado."
-        
-        if not material.hay_disponibles():
-            return False, "Material no disponible para préstamo.", None
-                
-        
-        if len(usuario.get_material_prestado()) >= usuario.get_limite_prestamos():
-            return False, "Límite de préstamos alcanzado para este tipo de usuario."
-        
-        if material.prestar():
-            usuario.prestar_material(material.get_titulo()) 
-
-            prestamo = Prestamo(
-                f"P{self.contador_prestamos:}",
-                usuario,
-                material,
-                usuario.get_dias_prestamo()
-            )
-            self.prestamos.append(prestamo)
-            
-            self.contador_prestamos += 1
-            return True, "Préstamo exitoso.", prestamo
-        
-        return False, "Error al prestar el material."
-
-    def realizar_devolucion(self, id_usuario, titulo_material):
-        """Procesa la devolución de un material por parte de un usuario."""
-        usuario = self.usuarios.get(id_usuario)
-        if usuario is None:
-            return False, "Usuario no encontrado.",None
->>>>>>> a5d0d96612f649c94bbeb758ec7d5c1ece0c5b65
         
         material = self.buscar_material(titulo_material)
         if material is None:
@@ -154,16 +117,9 @@ class SistemaBiblioteca:
                 prestamo.get_material().get_titulo() == titulo_material):
                 
                 material.devolver()
-<<<<<<< HEAD
                 usuario.devolver_material(titulo_identificador)
                 prestamo.finalizar()
                 
-=======
-                usuario.devolver_material(titulo_identificador) 
-                prestamo.finalizar()        
-                
-#Calcula los dias de retraso
->>>>>>> a5d0d96612f649c94bbeb758ec7d5c1ece0c5b65
                 fecha_dev = prestamo.get_fecha_devolucion()
                 fecha_ven = prestamo.get_fecha_vencimiento()
                 dias_retraso = (fecha_dev - fecha_ven).days
@@ -197,13 +153,7 @@ class SistemaBiblioteca:
 
 # Si no hay cola
         return True, "Devolución exitosa.", prestamo.get_fecha_devolucion()
-        
-<<<<<<< HEAD
-        return False, "Préstamo activo no encontrado para este usuario y material."
-=======
-     
->>>>>>> a5d0d96612f649c94bbeb758ec7d5c1ece0c5b65
-    
+            
     def listar_materiales(self):
         if self.arbol_materiales is None:
             return []
