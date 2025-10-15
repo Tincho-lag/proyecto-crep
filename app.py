@@ -176,7 +176,8 @@ def menu_devoluciones(sistema):
     if not exito:
         return  # ← Salir si falló la devolución
     
-    # Ahora sí, procesar la cola de reservas
+    # Ahora sí,7
+    #  procesar la cola de reservas
     if titulo in reservas and not reservas[titulo].estaVacia():
         siguiente_usuario = reservas[titulo].desencolar()
         print(f"\n✓ Material disponible para el siguiente en la cola: {siguiente_usuario}")
