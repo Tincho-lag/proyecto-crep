@@ -1,8 +1,0 @@
-# comandos git:
-git add . 
-git commit -m "Nombrar evento o accion"
-git push origin main
-# dependencias :s
-visuales del git : pip install customtkinter(el tkinter pero pro) -
-pillow(visualizador imagenes)
-# BITACORA Proyecto https://docs.google.com/document/d/1Nlcs_m1fBlIizSWNfEaoDFsGtzcq6g96oV9r9JpxVYc/edit?usp=sharing

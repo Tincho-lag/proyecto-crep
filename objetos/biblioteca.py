@@ -1,6 +1,6 @@
 from .nodo_arbol import ArbolBinario
 from objetos.elemento import Libro, Recursos
-
+# clase prestamo 
 class Prestamo:
     def __init__(self, id_prestamo, usuario, material, dias_prestamo):
         self.__id_prestamo = id_prestamo
@@ -23,8 +23,11 @@ class Prestamo:
     
     def esta_activo(self):
         return self.__activo
-    
 
+    def finalizar(self):
+         self.__activo = False
+         
+# clase sistema gestor
 class SistemaBiblioteca:
     def __init__(self):
         self.arbol_materiales = None  

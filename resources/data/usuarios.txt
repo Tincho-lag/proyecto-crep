@@ -1,6 +1,3 @@
-Profesor|PROF001|Juan Carlos|El hood|activo
-Estudiante|EST001|Gonzalito|zxc123|activo
-Estudiante|EST002|Hernan|qwe123|activo
-Estudiante|EST003|Flavio|pop123|activo
-Profesor|PROF002|Henrrique|asd123|activo
-Profesor|PROF003|Jose|lim123|activo
+Profesor|PROF001|JUAN|1|activo
+Profesor|PROF002|LUAN|L|activo
+Profesor|PROF003|PORNO|1|activo
