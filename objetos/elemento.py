@@ -52,7 +52,7 @@ class Recursos:
 
 
 class Libro(Recursos):
-    """clase libro hereda de recursos (tiene atributos adicionales)"""
+    # clase libro hereda de recursos (tiene atributos adicionales)
     def __init__(self, referencia, tipo, isbn, titulo, autor, ano_publicacion, ejemplares_totales, ejemplares_disponibles):
         # llama al constructor de la clase padre
         super().__init__(referencia, tipo, ejemplares_totales, ejemplares_disponibles) 
