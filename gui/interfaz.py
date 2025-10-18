@@ -13,11 +13,6 @@ from objetos.elemento import Libro, Recursos
 from objetos.usuario import Estudiante, Profesor
 from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
 
-# Función opcional para mostrar registro de socios
-try:
-    from gui.registro_socios import mostrar_registro
-except Exception:
-    mostrar_registro = None
 
 
 class BibliotecaApp:
