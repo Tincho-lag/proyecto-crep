@@ -9,4 +9,3 @@ pillow(visualizador imagenes)
 (opcional) python3 -m venv venv        # crean el entorno virtual para no romper visual 
 (opcional) source venv/bin/activate    # activan el entorno 
 pip install -r requirements.txt  # librerias que se usaron pillow y customtkinder
-# BITACORA Proyecto https://docs.google.com/document/d/1Nlcs_m1fBlIizSWNfEaoDFsGtzcq6g96oV9r9JpxVYc/edit?usp=sharing
