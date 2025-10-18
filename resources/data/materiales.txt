@@ -1,4 +1,8 @@
 A123|Libro|123-456-789|1984|George Orwell|1949|2|0
 123|Libro|12|212|2121|21212|21212|21212
+<<<<<<< HEAD
 REC001|Alargue|1|1
 B123|libro|987-654-321-1|Nosotros|Yecgueni|1920|3|3
+=======
+REC001|Alargue|1|0
+>>>>>>> 59df0868488800f33c115a75db4c08b31407c043

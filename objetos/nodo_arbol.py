@@ -1,7 +1,7 @@
 # objetos/nodo_arbol.py
 
 class NodoArbol:
-    """nodo del arbol binario que contiene un material"""
+    # nodo del arbol binario que contiene un material
     def __init__(self, material):
         self.material = material
         self.izquierdo = None  # hijo izquierdo (menor alfabeticamente)
@@ -9,12 +9,12 @@ class NodoArbol:
 
 
 class ArbolBinario:
-    """arbol binario de busqueda para ordenar materiales alfabeticamente"""
+    # arbol binario de busqueda para ordenar materiales alfabeticamente
     def __init__(self):
         self.raiz = None  # el arbol comienza vacio
     
     def insertar(self, material):
-        """inserta un material en el arbol manteniendo orden alfabetico"""
+        # inserta un material en el arbol manteniendo orden alfabetico
         if self.raiz is None:
             # primer material: se convierte en la raiz
             self.raiz = NodoArbol(material)
@@ -42,11 +42,11 @@ class ArbolBinario:
                 self._insertar_recursivo(nodo.derecho, material)
     
     def buscar_por_titulo(self, titulo):
-        """busca un material por titulo de forma eficiente O(log n)"""
+        # busca un material por titulo de forma eficiente O(log n)
         return self._buscar_recursivo(self.raiz, titulo)
     
     def _buscar_recursivo(self, nodo, titulo):
-        """metodo recursivo privado para buscar"""
+        # metodo recursivo privado para buscar
         if nodo is None:
             # no encontrado
             return None

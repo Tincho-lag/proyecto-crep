@@ -1,0 +1,3 @@
+estudiante|EST001|EST002|1|activo
+estudiante|EST002|1|1|activo
+estudiante|EST003|JUAN|A|activo

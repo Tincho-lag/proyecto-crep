@@ -1,5 +1,3 @@
-# app.py
-
 from objetos.biblioteca import SistemaBiblioteca
 from objetos.usuario import Estudiante, Profesor
 from objetos.elemento import Libro, Recursos
@@ -67,7 +65,6 @@ def menu_principal():
             print("\ndatos guardados. hasta luego!")
             break
 
-
 def menu_materiales(sistema):
     # submenu para gestion de materiales
     print("\n--- gestion de materiales ---")
@@ -75,8 +72,9 @@ def menu_materiales(sistema):
     print("2. agregar recurso generico")
     print("3. listar todos")
     print("4. buscar por titulo")
+    print("5. eliminar material")
     
-    opciones_validas = {"1", "2", "3", "4"}
+    opciones_validas = {"1", "2", "3", "4", "5"}
     opcion = ""
     
     while opcion not in opciones_validas:
@@ -96,7 +94,7 @@ def menu_materiales(sistema):
             
             libro = Libro(ref, "libro", isbn, titulo, autor, ano, ejemplares, ejemplares)
             sistema.agregar_material(libro)
-            print("✓ libro agregado exitosamente")
+            print(" libro agregado exitosamente")
         
         except ValueError:
             print("error: datos invalidos. intente nuevamente.")
@@ -110,7 +108,7 @@ def menu_materiales(sistema):
             
             recurso = Recursos(ref, tipo, ejemplares, ejemplares)
             sistema.agregar_material(recurso)
-            print(f"✓ recurso '{tipo}' agregado exitosamente")
+            print(f" recurso '{tipo}' agregado exitosamente")
         
         except ValueError:
             print("error: datos invalidos. intente nuevamente.")
@@ -124,10 +122,38 @@ def menu_materiales(sistema):
         material = sistema.buscar_material(buscar)
         
         if material:
-            print(f"\n✓ material encontrado:\n  {material}")
+            print(f"\n material encontrado:\n  {material}")
         else:
-            print("✗ material no encontrado.")
+            print(" material no encontrado.")
 
+    elif opcion == "5":
+        # eliminar material
+        titulo = input("ingrese titulo/tipo del material a eliminar: ").strip()
+        material = sistema.buscar_material(titulo)
+        
+        if not material:
+            print(" material no encontrado.")
+            return
+        
+        # verificar si el material tiene prestamos activos
+        for prestamo in sistema.prestamos:
+            if prestamo.esta_activo() and prestamo.get_material().get_titulo() == titulo:
+                print(" error: el material tiene prestamos activos.")
+                return
+        
+        # verificar si el material tiene reservas
+        if titulo in sistema.reservas and not sistema.reservas[titulo].estaVacia():
+            print(" error: el material tiene reservas activas.")
+            return
+        
+        # eliminar material del arbol (reconstruir arbol sin el material)
+        materiales = sistema.listar_materiales()
+        sistema.arbol_materiales = None  # reiniciar arbol
+        for mat in materiales:
+            if mat.get_titulo().lower() != titulo.lower():
+                sistema.agregar_material(mat)
+        
+        print(f" material '{titulo}' eliminado exitosamente.")
 
 def menu_usuarios(sistema):
     # submenu para gestion de usuarios
@@ -135,8 +161,15 @@ def menu_usuarios(sistema):
     print("1. agregar estudiante")
     print("2. agregar profesor")
     print("3. listar todos")
+    print("4. eliminar usuario")
     
-    opcion = input("opcion: ")
+    opciones_validas = {"1", "2", "3", "4"}
+    opcion = ""
+    
+    while opcion not in opciones_validas:
+        opcion = input("opcion: ")
+        if opcion not in opciones_validas:
+            print("opcion invalida.")
     
     if opcion == "1" or opcion == "2":
         tipo = "estudiante" if opcion == "1" else "profesor"
@@ -151,7 +184,7 @@ def menu_usuarios(sistema):
             nuevo_usuario = Profesor(id_usuario, nombre, domicilio)
         
         sistema.agregar_usuario(nuevo_usuario)
-        print(f"✓ {tipo} '{nombre}' agregado exitosamente")
+        print(f" {tipo} '{nombre}' agregado exitosamente")
     
     elif opcion == "3":
         print("\n--- usuarios registrados ---")
@@ -160,7 +193,30 @@ def menu_usuarios(sistema):
         else:
             for usuario in sistema.usuarios.values():
                 print(f"  {usuario}")
-
+    
+    elif opcion == "4":
+        # eliminar usuario
+        id_usuario = input("id del usuario a eliminar: ")
+        usuario = sistema.usuarios.get(id_usuario)
+        
+        if not usuario:
+            print(" usuario no encontrado.")
+            return
+        
+        # verificar si el usuario tiene prestamos activos
+        if usuario.get_material_prestado():
+            print(" error: el usuario tiene prestamos activos.")
+            return
+        
+        # verificar si el usuario esta en alguna cola de reservas
+        for cola in sistema.reservas.values():
+            if cola.contiene(id_usuario):
+                print(" error: el usuario esta en una cola de reservas.")
+                return
+        
+        # eliminar usuario
+        del sistema.usuarios[id_usuario]
+        print(f" usuario '{id_usuario}' eliminado exitosamente.")
 
 def menu_prestamos(sistema):
     # procesa solicitudes de prestamo
@@ -186,11 +242,10 @@ def menu_prestamos(sistema):
         
         if not cola.contiene(id_usuario):
             cola.encolar(id_usuario)
-            print(f"\n→ usuario agregado a cola de espera")
+            print(f"\n usuario agregado a cola de espera")
             print(f"  posicion: {cola.tamanio()}")
         else:
-            print("→ usuario ya esta en cola de espera")
-
+            print("usuario ya esta en cola de espera")
 
 def menu_devoluciones(sistema):
     # procesa devoluciones de materiales
@@ -201,7 +256,6 @@ def menu_devoluciones(sistema):
     # procesar devolucion
     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
     print(f"\nresultado: {msg}")
-
 
 def mostrar_catalogo(sistema):
     # muestra todos los materiales ordenados alfabeticamente
@@ -215,7 +269,6 @@ def mostrar_catalogo(sistema):
             print(f"  {i}. {mat}")
         print(f"\ntotal: {len(materiales)} materiales")
 
-
 def mostrar_reservas(sistema):
     # muestra todas las colas de espera activas
     print("\n--- reservas activas ---")
@@ -227,7 +280,6 @@ def mostrar_reservas(sistema):
             print(f"\nmaterial: {titulo}")
             print(f"  usuarios en espera: {cola.tamanio()}")
             print(f"  cola: {cola}")
-
 
 def mostrar_transacciones():
     # muestra el historial de transacciones
@@ -253,7 +305,6 @@ def mostrar_transacciones():
         print("no hay transacciones registradas aun.")
     except Exception as e:
         print(f"error al leer transacciones: {e}")
-
 
 if __name__ == "__main__":
     menu_principal()
