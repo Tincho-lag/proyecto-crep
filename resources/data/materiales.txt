@@ -1,3 +1,4 @@
 A123|Libro|123-456-789|1984|George Orwell|1949|2|0
 123|Libro|12|212|2121|21212|21212|21212
 REC001|Alargue|1|1
+B123|libro|987-654-321-1|Nosotros|Yecgueni|1920|3|3
