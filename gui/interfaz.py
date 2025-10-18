@@ -72,11 +72,11 @@ class BibliotecaApp:
                              "relief": "flat", "font": ("Segoe UI", 11)}
 
         botones_info = [
-            ("Catálogo", self.mostrar_catalogo),
+            ("Catalogo", self.mostrar_catalogo),
             ("Agregar Material", self.abrir_agregar_material),
             ("Usuarios", self.mostrar_usuarios),
             ("Agregar Usuario", self.abrir_agregar_usuario),
-            ("Préstamos", self.abrir_prestamo),
+            ("Prestamos", self.abrir_prestamo),
             ("Devoluciones", self.abrir_devolucion),
             ("Historial", self.mostrar_historial)
         ]
@@ -172,9 +172,9 @@ class BibliotecaApp:
             tree.insert("", tk.END, values=(usuario.get_id(), usuario.get_nombre(), usuario.get_domicilio(), tipo, estado))
 
     def mostrar_historial(self):
-        """Muestra las transacciones guardadas en resources/data/transacciones.txt"""
+        #Muestra las transacciones guardadas en resources/data/transacciones.txt
         self.limpiar_main()
-        tk.Label(self.main_frame, text="Historial de Préstamos y Devoluciones",
+        tk.Label(self.main_frame, text="Historial de Prestamos y Devoluciones",
                  font=("Segoe UI", 16, "bold"), bg=self.COLOR_FONDO).pack(pady=12)
 
         texto = tk.Text(self.main_frame, font=("Segoe UI", 12), height=25, width=95)
@@ -182,7 +182,7 @@ class BibliotecaApp:
 
         archivo = "resources/data/transacciones.txt"
         if not os.path.exists(archivo):
-            texto.insert(tk.END, "No hay registros de préstamos o devoluciones.")
+            texto.insert(tk.END, "No hay registros de prestamos o devoluciones.")
         else:
             try:
                 with open(archivo, "r", encoding="utf-8") as f:
@@ -236,7 +236,7 @@ class BibliotecaApp:
                     material = Recursos(ref, titulo, ejemplares, ejemplares)
 
                 self.sistema.agregar_material(material)
-                messagebox.showinfo("Éxito", f"Material '{titulo}' agregado.")
+                messagebox.showinfo("Exito", f"Material '{titulo}' agregado.")
                 ventana.destroy()
                 self.mostrar_catalogo()
             except ValueError as e:
@@ -275,11 +275,11 @@ class BibliotecaApp:
                 if not id_usuario or not nombre or not domicilio:
                     raise ValueError("ID, nombre y domicilio son obligatorios.")
                 if id_usuario in self.sistema.usuarios:
-                    raise ValueError("El ID ya está registrado.")
+                    raise ValueError("El ID ya esta registrado.")
 
                 usuario = Estudiante(id_usuario, nombre, domicilio) if tipo_var.get() == "Estudiante" else Profesor(id_usuario, nombre, domicilio)
                 self.sistema.agregar_usuario(usuario)
-                messagebox.showinfo("Éxito", f"Usuario '{nombre}' agregado.")
+                messagebox.showinfo("Exito", f"Usuario '{nombre}' agregado.")
                 ventana.destroy()
                 self.mostrar_usuarios()
             except ValueError as e:
@@ -319,7 +319,7 @@ class BibliotecaApp:
                 else:
                     # seguridad: si devuelve booleano o algo extraño
                     exito = bool(resultado)
-                    msg = "Acción realizada." if exito else "Error al realizar préstamo."
+                    msg = "Accion realizada." if exito else "Error al realizar prestamo."
                     prestamo = None
 
                 if exito:
@@ -331,14 +331,14 @@ class BibliotecaApp:
             except ValueError as e:
                 messagebox.showerror("Error", str(e))
             except Exception as e:
-                messagebox.showerror("Error", f"Ocurrió un error: {e}")
+                messagebox.showerror("Error", f"Ocurrio un error: {e}")
 
         tk.Button(ventana, text="Prestar", width=14, height=2, font=("Segoe UI", 12),
                   bg="#C1D4FF", command=prestar).pack(pady=14)
 
     def abrir_devolucion(self):
         ventana = tk.Toplevel(self.ventana)
-        ventana.title("Realizar Devolución")
+        ventana.title("Realizar Devolucion")
         ventana.geometry("420x220")
         ventana.configure(bg=self.COLOR_FONDO)
 
@@ -361,10 +361,10 @@ class BibliotecaApp:
                     exito, msg = resultado
                 else:
                     exito = bool(resultado)
-                    msg = "Devolución procesada." if exito else "Error en la devolución."
+                    msg = "Devolucion procesada." if exito else "Error en la devolucion."
 
                 if exito:
-                    messagebox.showinfo("Éxito", msg)
+                    messagebox.showinfo("Exito", msg)
                     ventana.destroy()
                     self.mostrar_catalogo()
                 else:
@@ -372,7 +372,7 @@ class BibliotecaApp:
             except ValueError as e:
                 messagebox.showerror("Error", str(e))
             except Exception as e:
-                messagebox.showerror("Error", f"Ocurrió un error: {e}")
+                messagebox.showerror("Error", f"Ocurrio un error: {e}")
 
         tk.Button(ventana, text="Devolver", width=14, height=2, font=("Segoe UI", 12),
                   bg="#C1D4FF", command=devolver).pack(pady=14)
@@ -388,7 +388,7 @@ class BibliotecaApp:
             except Exception:
                 # no crítico, continuar
                 pass
-            messagebox.showinfo("Éxito", "Datos guardados. ¡Hasta luego!")
+            messagebox.showinfo("Exito", "Datos guardados. ¡Hasta luego!")
             self.ventana.destroy()
         except Exception as e:
             messagebox.showerror("Error", f"Error al guardar datos: {str(e)}")

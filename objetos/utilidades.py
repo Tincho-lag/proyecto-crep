@@ -6,7 +6,7 @@ from datetime import datetime
 #  PERSISTENCIA DE MATERIALES 
 
 def guardar_materiales(sistema, archivo="resources/data/materiales.txt"):
-    """guarda todos los materiales del sistema en archivo txt"""
+    #guarda todos los materiales del sistema en archivo txt
     try:
         with open(archivo, "w") as f:
             materiales = sistema.listar_materiales()
