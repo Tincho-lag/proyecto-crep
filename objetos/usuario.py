@@ -1,9 +1,9 @@
-# objetos/usuario.py
 from datetime import date, timedelta
+
 class Administrador:  
-# hacer despues (no usado por ahora) se supone que  
-# solo esta clase puede agregar o eliminar usuarios 
-    def __init__(self, id, nombre, ):
+    # hacer despues (no usado por ahora) se supone que  
+    # solo esta clase puede agregar o eliminar usuarios 
+    def __init__(self, id, nombre):
         self.__id = id
         self.__nombre = nombre
 
@@ -12,18 +12,18 @@ class Usuario:
         self.__id = id
         self.__nombre = nombre
         self.__domicilio = domicilio
-        self.__material_prestado = []  #lista para rastrear materiales prestados
+        self.__material_prestado = []  # lista para rastrear materiales prestados
         self.__estado = "activo" # puede ser activo o suspendido
         self.__fecha_fin_suspension = None
 
-# setters usuario modificar datos
+    # setters usuario modificar datos
     def set_nombre(self, nombre):
         self.__nombre = nombre
 
     def set_domicilio(self, domicilio):
         self.__domicilio = domicilio
         
-# getters usuario
+    # getters usuario
     def get_id(self):
         return self.__id 
     
@@ -39,7 +39,7 @@ class Usuario:
     def get_estado(self):
         return self.__estado  
 
-# métodos para gestionar préstamos
+    # metodos para gestionar prestamos
     def prestar_material(self, isbn):
         self.__material_prestado.append(isbn)
     
@@ -52,35 +52,34 @@ class Usuario:
             return True
         if self.__estado == "suspendido" and self.__fecha_fin_suspension:
             try:
-                if date.today()>=self.__fecha_fin_suspension:
+                if date.today() >= self.__fecha_fin_suspension:
                     self.reactivar()
                     return True
             except Exception:
                 pass
         return self.__estado == "activo"
     
-    
     def suspender(self, dias):
         self.__estado = "suspendido" 
         if dias and dias > 0:
-            self.__fecha_fin_suspension = date.today() + timedelta(days=1)
+            self.__fecha_fin_suspension = date.today() + timedelta(days=dias)
         else:
-            self.__fecha_fin_suspencion = None  # suspensión indefinida
+            self.__fecha_fin_suspension = None  # suspension indefinida
 
     def reactivar(self):
         self.__estado = "activo"
         self.__fecha_fin_suspension = None
 
     def __str__(self):
-        estado_texto = "ACTIVO" if self.estado_activo() else "SUSPENDIDO"
-        return f"{self.get_nombre()} (ID: {self.get_id()}) - {estado_texto}"
+        estado_texto = "activo" if self.estado_activo() else "suspendido"
+        return f"{self.get_nombre()} (id: {self.get_id()}) - {estado_texto}"
 
-class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar prestamos
+class Estudiante(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
     def __init__(self, id, nombre, domicilio):
-        super().__init__(id, nombre, domicilio,)
-        self.__tipo = "Estudiante" 
+        super().__init__(id, nombre, domicilio)
+        self.__tipo = "estudiante" 
 
-# tres articulos dos dias de prestamo para estudiantes 
+    # tres articulos dos dias de prestamo para estudiantes 
     def get_limite_prestamos(self):
         return 3
 
@@ -88,40 +87,13 @@ class Estudiante(Usuario): # hereda de usuario puede ver libros y socilitar pres
         return 2
 
 class Profesor(Usuario): # hereda de usuario puede ver libros y solicitar prestamos
-    def __init__(self, id, nombre, domicilio,):
-        super().__init__(id , nombre, domicilio)
-        self.__tipo = "Profesor" 
+    def __init__(self, id, nombre, domicilio):
+        super().__init__(id, nombre, domicilio)
+        self.__tipo = "profesor" 
 
-# cinco articulos y 7 dias de prestamo para profesores 
+    # cinco articulos y 7 dias de prestamo para profesores 
     def get_limite_prestamos(self):
         return 5
 
     def get_dias_prestamo(self):
         return 5
-        
-
-#biblioteca_sistema 
-
-# estructura del actual proyecto
-# proyecto- crep:
-#├── objetos/                # Carpeta para las clases principales
-#│   ├────── elemento.py          # Clase base para materiales # Libro, Cables, DVD etc
-#│   ├────── utilidades.py     # Funciones auxiliares 
-#│   ├────── usuario.py         # Clases de usuarios Estudiante Profesor 
-#│   ├────── biblioteca.py    # Clase principal del sistema # Gestión de materiales y usuarios
-#│   ├────── nodo_arbol.py    # Clase principal del sistema # Gestión de materiales y usuarios
-#├── app.py                      # Archivo principal para ejecutar test (en desuso)
-#├── resources/              # Carpeta para recursos estáticos # Imágenes, íconos, etc.
-#│   ├────── data/                 # Carpeta para almacenar archivos de datos
-#│             ├────── usuarios.txt
-#│             ├────── materiales.txt
-#│   ├────── images/               # Carpeta para imágenes e iconos
-#├── gui/                    # Carpeta para la interfaz gráfica # Tkinter  Parte Martin 
-#├── notas                 # Carpeta para notas y documentación 
-#│   ├── diagramas/              # Carpeta para diagramas UML y otros
-#│   ├── notas.txt              # Notas del proyecto
-#├── tests/                  # Carpeta para pruebas unitarias
-#│   ├── prueba_interfaz.py      # Pruebas para la clase
-#└── README.TXT               # Documentación del proyecto
-#└── requirements.txt        # Dependencias del proyecto
-

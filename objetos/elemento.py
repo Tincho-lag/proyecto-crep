@@ -1,5 +1,3 @@
-# objetos/elemento.py 
-
 class Recursos: 
     def __init__(self, referencia, tipo, ejemplares_totales, ejemplares_disponibles):
         self.__referencia = referencia
@@ -8,12 +6,11 @@ class Recursos:
         self.__ejemplares_disponibles = ejemplares_disponibles
     
     def __str__(self):
-        return f"Recurso: {self.__referencia}, Tipo: {self.__tipo}, Ejemplares totales: {self.__ejemplares_totales}, Ejemplares disponibles: {self.__ejemplares_disponibles}"
+        return f"recurso: {self.__referencia}, tipo: {self.__tipo}, ejemplares totales: {self.__ejemplares_totales}, ejemplares disponibles: {self.__ejemplares_disponibles}"
     
-# getters 
-
-    def get_titulo(self): # para recursos genéricos, el título es el tipo 
-        return self.__tipo  # el tipo como clave de búsqueda/ordenamiento para el arbolito
+    # getters 
+    def get_titulo(self): # para recursos genericos, el titulo es el tipo 
+        return self.__tipo  # el tipo como clave de busqueda/ordenamiento para el arbolito
     
     def get_referencia(self):
         return self.__referencia
@@ -27,7 +24,7 @@ class Recursos:
     def get_ejemplares_disponibles(self): # disponibles para prestar
         return self.__ejemplares_disponibles
     
-# setters
+    # setters
     def set_ejemplares_totales(self, ejemplares):
         self.__ejemplares_totales = ejemplares
 
@@ -37,35 +34,35 @@ class Recursos:
     def set_referencia(self, referencia):
         self.__referencia = referencia
     
-# metodos (para prestar devolvver y mostrar materiales)
+    # metodos (para prestar devolvver y mostrar materiales)
     def hay_disponibles(self):
-        return self.__ejemplares_disponibles > 0  # devuelve True si hay ejemplares disponibles
+        return self.__ejemplares_disponibles > 0  # devuelve true si hay ejemplares disponibles
     
     def prestar(self):
         if self.__ejemplares_disponibles > 0:
-                self.__ejemplares_disponibles -= 1 # si hay mas de 0 ejemplares disponibles reduce de a 1
-                return True
+            self.__ejemplares_disponibles -= 1 # si hay mas de 0 ejemplares disponibles reduce de a 1
+            return True
         else:
-                return False
+            return False
 
     def devolver(self):
         if self.__ejemplares_disponibles < self.__ejemplares_totales: # si hay menos ejemplares disponibles que el total
-             self.__ejemplares_disponibles += 1 # aumenta en 1
-             return True
+            self.__ejemplares_disponibles += 1 # aumenta en 1
+            return True
         else:
-             return False
+            return False
 
 class Libro(Recursos):
-    def __init__(self, referencia, tipo, isbn, titulo, autor, año_publicacion,ejemplares_totales, ejemplares_disponibles ):
+    def __init__(self, referencia, tipo, isbn, titulo, autor, ano_publicacion, ejemplares_totales, ejemplares_disponibles):
         super().__init__(referencia, tipo, ejemplares_totales, ejemplares_disponibles) 
         self.__isbn = isbn
         self.__titulo = titulo
         self.__autor = autor
-        self.__año_publicacion = año_publicacion
+        self.__ano_publicacion = ano_publicacion
         
     def __str__(self):
         base_str = super().__str__()
-        return f"{base_str}, ISBN: {self.__isbn}, Título: {self.__titulo}, Autor: {self.__autor}, Año de publicación: {self.__año_publicacion}"
+        return f"{base_str}, isbn: {self.__isbn}, titulo: {self.__titulo}, autor: {self.__autor}, ano de publicacion: {self.__ano_publicacion}"
     
     # atributos especificos del libro
     def get_titulo(self):
@@ -77,7 +74,5 @@ class Libro(Recursos):
     def get_autor(self):
         return self.__autor 
     
-    def get_año_publicacion(self):
-        return self.__año_publicacion 
-    
-    
+    def get_ano_publicacion(self):
+        return self.__ano_publicacion

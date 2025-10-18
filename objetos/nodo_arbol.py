@@ -1,5 +1,3 @@
-# objetos/nodo_arbol.py
-
 class NodoArbol:
     def __init__(self, material):
         self.material = material
@@ -17,9 +15,10 @@ class ArbolBinario:
             self._insertar_recursivo(self.raiz, material)
     
     def _insertar_recursivo(self, nodo, material):
-
-# ordenar alfabaticamente por título
-        if material.get_titulo() < nodo.material.get_titulo():
+        # ordenar alfabaticamente por titulo
+        titulo_nuevo = material.get_titulo().lower()
+        titulo_nodo = nodo.material.get_titulo().lower()
+        if titulo_nuevo < titulo_nodo:
             if nodo.izquierdo is None:
                 nodo.izquierdo = NodoArbol(material)
             else:
@@ -36,9 +35,11 @@ class ArbolBinario:
     def _buscar_recursivo(self, nodo, titulo):
         if nodo is None:
             return None
-        if titulo == nodo.material.get_titulo():
+        titulo_lower = titulo.lower()
+        titulo_nodo = nodo.material.get_titulo().lower()
+        if titulo_lower == titulo_nodo:
             return nodo.material
-        elif titulo < nodo.material.get_titulo():
+        elif titulo_lower < titulo_nodo:
             return self._buscar_recursivo(nodo.izquierdo, titulo)
         else:
             return self._buscar_recursivo(nodo.derecho, titulo)
@@ -53,4 +54,3 @@ class ArbolBinario:
             self._inorden(nodo.izquierdo, materiales)
             materiales.append(nodo.material)
             self._inorden(nodo.derecho, materiales)
-

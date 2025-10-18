@@ -2,36 +2,35 @@ from objetos.biblioteca import SistemaBiblioteca
 from objetos.usuario import Estudiante, Profesor
 from objetos.elemento import Libro, Recursos
 from objetos.utilidades import guardar_materiales, cargar_materiales, guardar_usuarios, cargar_usuarios
-from objetos.utilidades import Cola
+from objetos.utilidades import Cola, guardar_prestamos, cargar_prestamos, guardar_reservas, cargar_reservas, registrar_historial
 
-reservas = {}  # Diccionario para manejar las colas de reservas
-
-######### AGREGAR VALIDACIONES DESPUES #########
-
+# agregar validaciones despues
 def menu_principal():
     sistema = SistemaBiblioteca()
     cargar_materiales(sistema)  # cargar datos existentes
     cargar_usuarios(sistema)
-    print("Bienvenido al Sistema de Gestión de Biblioteca del CeRP")
+    cargar_prestamos(sistema)
+    cargar_reservas(sistema)
+    print("bienvenido al sistema de gestion de biblioteca del cerp")
     
     while True:
         print("\n" + "="*50)
-        print("SISTEMA DE GESTIÓN DE BIBLIOTECA - CeRP")
+        print("sistema de gestion de biblioteca - cerp")
         print("="*50)
-        print("1. Gestión de Materiales")
-        print("2. Gestión de Usuarios")
-        print("3. Préstamos")
-        print("4. Devoluciones")
-        print("5. Consultar Catálogo")
-        print("6. Usuarios en cola de espera")
-        print("7. Guardar y Salir")
-     # validaciones de entrada    
+        print("1. gestion de materiales")
+        print("2. gestion de usuarios")
+        print("3. prestamos")
+        print("4. devoluciones")
+        print("5. consultar catalogo")
+        print("6. usuarios en cola de espera")
+        print("7. guardar y salir")
+        # validaciones de entrada    
         opciones_validas = {"1","2","3","4","5","6","7"}
         opcion = ""
         while opcion not in opciones_validas:
-            opcion = input("\nSeleccione opción: ")
+            opcion = input("\nseleccione opcion: ")
             if opcion not in opciones_validas:
-                print("opcion invalida. Intente nuevamente. ")
+                print("opcion invalida. intente nuevamente.")
 
         if opcion == "1":
             menu_materiales(sistema)
@@ -44,159 +43,144 @@ def menu_principal():
         elif opcion == "5":
             mostrar_catalogo(sistema)
         elif opcion == "6":
-            print("\n--- Reservas ---")
-            if not reservas:
-                print("No hay reservas activas.")
+            print("\n--- reservas ---")
+            if not sistema.reservas:
+                print("no hay reservas activas.")
             else:
-                for titulo, cola in reservas.items():
-                    print(f"Titulo/Material: {titulo}, en {cola}")
-                    
+                for titulo, cola in sistema.reservas.items():
+                    print(f"titulo/material: {titulo}, en {cola}")
         elif opcion == "7":
             guardar_usuarios(sistema)
             guardar_materiales(sistema)
-            print("Datos guardados. ¡Hasta luego!")
+            guardar_prestamos(sistema)
+            guardar_reservas(sistema)
+            print("datos guardados. hasta luego!")
             break
-        else:
-            print("Opción inválida. Intente nuevamente.")
 
 def menu_materiales(sistema):
-    print("\n--- GESTIÓN DE MATERIALES ---")
-    print("1. Agregar Libro (con ISBN, Título, Autor)")
-    print("2. Agregar Recurso (genérico, ej: Cargador , Revista, Comic etc)")
-    print("3. Listar todos")
-    print("4. Buscar por titulo/tipo")
+    print("\n--- gestion de materiales ---")
+    print("1. agregar libro (con isbn, titulo, autor)")
+    print("2. agregar recurso (generico, ej: cargador, revista, comic etc)")
+    print("3. listar todos")
+    print("4. buscar por titulo/tipo")
     opciones_validas = {"1","2","3","4"}
     opcion = ""
     while opcion not in opciones_validas:
-        opcion = input("Opcion: ")
-        print("opcion invalida. Intente nuevamente. ")
+        opcion = input("opcion: ")
     
     if opcion == "1":
         try:
-            ref = input("Referencia: ")
-            isbn = input("ISBN: ")
-            titulo = input("Título: ")
-            autor = input("Autor: ")
-            año = int(input("Año publicación: "))
-            ejemplares = int(input("Ejemplares: "))
+            ref = input("referencia: ")
+            isbn = input("isbn: ")
+            titulo = input("titulo: ").strip()
+            autor = input("autor: ")
+            ano = int(input("ano publicacion: "))
+            ejemplares = int(input("ejemplares: "))
         
-            libro = Libro(ref, "Libro", isbn, titulo, autor, año, ejemplares, ejemplares)
+            libro = Libro(ref, "libro", isbn, titulo, autor, ano, ejemplares, ejemplares)
             sistema.agregar_material(libro)
+            print("libro agregado")
         except ValueError:
-            print("Error en los datos ingresados. Intente nuevamente.")
-        print(" Libro agregado")
+            print("error en los datos ingresados. intente nuevamente.")
 
     elif opcion == "2": 
         try:
-            ref = input("Referencia (ej: REC001): ")
-            tipo = input("Tipo de Recurso (ej: Cargador USB, Alargue): ")
-            ejemplares = int(input("Ejemplares: "))
+            ref = input("referencia (ej: rec001): ")
+            tipo = input("tipo de recurso (ej: cargador usb, alargue): ").strip()
+            ejemplares = int(input("ejemplares: "))
             
             recurso = Recursos(ref, tipo, ejemplares, ejemplares)
             sistema.agregar_material(recurso)
-            print(f"Recurso '{tipo}' agregado")
+            print(f"recurso '{tipo}' agregado")
         except ValueError:
-             print("Error en los datos ingresados.Intente nuevamente.")
+            print("error en los datos ingresados. intente nuevamente.")
 
     elif opcion == "3":
         mostrar_catalogo(sistema)
 
-    elif opcion == "4": # buscar por titulo o tipo
-        buscar = input("Ingrese título/tipo para buscar: ") # ref = referencia de busqueda 
-        material = sistema.buscar_material(buscar) # buscar por titulo o tipo de referencia
+    elif opcion == "4":
+        buscar = input("ingrese titulo/tipo para buscar: ").strip()
+        material = sistema.buscar_material(buscar)
         if material:
-            print(f"Material encontrado: {material}")
+            print(f"material encontrado: {material}")
         else:
-            print("Material no encontrado.")
+            print("material no encontrado.")
 
 def menu_usuarios(sistema):
-    print("\n--- GESTIÓN DE USUARIOS ---")
-    print("1. Agregar Estudiante")
-    print("2. Agregar Profesor")
-    print("3. Listar todos")
-
-    opcion = input("Opción: ")
+    print("\n--- gestion de usuarios ---")
+    print("1. agregar estudiante")
+    print("2. agregar profesor")
+    print("3. listar todos")
+    opcion = input("opcion: ")
     
     if opcion == "1" or opcion == "2":
-        tipo = "Estudiante" if opcion == "1" else "Profesor"
-        id_usuario = input(f"ID del {tipo} (ej: EST001, PROF001): ")
-        nombre = input("Nombre: ")
-        domicilio = input("Domicilio: ")
-
+        tipo = "estudiante" if opcion == "1" else "profesor"
+        id_usuario = input(f"id del {tipo} (ej: est001, prof001): ")
+        nombre = input("nombre: ")
+        domicilio = input("domicilio: ")
         if opcion == "1":
-            nuevo_usuario = Estudiante(id_usuario , nombre, domicilio)
+            nuevo_usuario = Estudiante(id_usuario, nombre, domicilio)
         else:
-            nuevo_usuario = Profesor(id_usuario , nombre, domicilio)
+            nuevo_usuario = Profesor(id_usuario, nombre, domicilio)
     
         sistema.agregar_usuario(nuevo_usuario)
-        print(f" {tipo} '{nombre}' agregado.")
-
+        print(f"{tipo} '{nombre}' agregado.")
     
     elif opcion == "3":
-        print("\n-- USUARIOS REGISTRADOS ---")
+        print("\n--- usuarios registrados ---")
         if not sistema.usuarios:
             print("no hay usuarios.")
         for usuario in sistema.usuarios.values():
-            print(f" {usuario}")
+            print(f"{usuario}")
 
 def menu_prestamos(sistema):
-    print("\n--- REALIZAR PRÉSTAMO ---")
-    id_usuario = input("ID del usuario: ")
-    titulo = input("Titulo o Tipo del material: ")
+    print("\n--- realizar prestamo ---")
+    id_usuario = input("id del usuario: ")
+    titulo = input("titulo o tipo del material: ").strip()
     
     exito, msg, prestamo = sistema.realizar_prestamo(id_usuario, titulo)
-    print(f"Resultado: {msg}")
-
-#si se realizo bien el prestamo mostrara la fecha
+    print(f"resultado: {msg}")
     if exito and prestamo is not None:
-        print(f"Fecha de préstamo: {prestamo.get_fecha_prestamo().strftime('%d/%m/%Y %H:%M')}")
-        print(f"Fecha estimada de devolución: {prestamo.get_fecha_vencimiento().strftime('%d/%m/%Y')}")    
-        
- #cola de espera si no hay ejemplares disponibles  
-    if not exito and "no disponible"in msg.lower():
-        if titulo not in reservas:
-            reservas[titulo] = Cola()
-        cola = reservas[titulo]
+        print(f"fecha de prestamo: {prestamo.get_fecha_prestamo().strftime('%d/%m/%Y %H:%M')}")
+        print(f"fecha estimada de devolucion: {prestamo.get_fecha_vencimiento().strftime('%d/%m/%Y')}")
+        registrar_historial("prestamo", prestamo.get_usuario(), prestamo.get_material())
+    
+    # cola de espera si no hay ejemplares disponibles  
+    if not exito and "no disponible" in msg.lower():
+        if titulo not in sistema.reservas:
+            sistema.reservas[titulo] = Cola()
+        cola = sistema.reservas[titulo]
         if not cola.contiene(id_usuario):
-            cola. encolar(id_usuario)
-            print(f"No hay ejemplares disponibles. El usuario fue agregado a la cola de espera")
-            print(f"Posición en la cola: {cola.tamanio()}")
+            cola.encolar(id_usuario)
+            print(f"no hay ejemplares disponibles. el usuario fue agregado a la cola de espera")
+            print(f"posicion en la cola: {cola.tamanio()}")
         else:
-            print("el usuario ya está en la cola de espera para este material.")
-            
+            print("el usuario ya esta en la cola de espera para este material.")
+
 def menu_devoluciones(sistema):
-    print("\n--- REALIZAR DEVOLUCIÓN ---")
-    id_usuario = input("ID del usuario: ")
-    titulo = input("Titulo o Tipo del material: ")
-
+    print("\n--- realizar devolucion ---")
+    id_usuario = input("id del usuario: ")
+    titulo = input("titulo o tipo del material: ").strip()
+    # para probar retrasos, mockear datetime.now() sumando dias manualmente
+    # from unittest.mock import patch
+    # from datetime import datetime, timedelta
+    # with patch('datetime.datetime.now') as mock_now:
+    #     mock_now.return_value = datetime.now() + timedelta(days=3)  # simular 3 dias de retraso
+    #     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
+    #     print(f"resultado: {msg}")
+    #     return
     exito, msg = sistema.realizar_devolucion(id_usuario, titulo)
-    print(f"Resultado: {msg}")
-    
-    # SOLO procesar reservas si la devolución FUE EXITOSA
-    if not exito:
-        return  # ← Salir si falló la devolución
-    
-    # Ahora sí,7
-    #  procesar la cola de reservas
-    if titulo in reservas and not reservas[titulo].estaVacia():
-        siguiente_usuario = reservas[titulo].desencolar()
-        print(f"\n✓ Material disponible para el siguiente en la cola: {siguiente_usuario}")
-        
-        exito_reserva, msg_reserva, prestamo_reserva = sistema.realizar_prestamo(siguiente_usuario, titulo)
-        print(f"Resultado del préstamo automático: {msg_reserva}")
-        
-        if exito_reserva and prestamo_reserva is not None:
-            print(f"Fecha de préstamo: {prestamo_reserva.get_fecha_prestamo().strftime('%d/%m/%Y %H:%M')}")
-            print(f"Fecha estimada de devolución: {prestamo_reserva.get_fecha_vencimiento().strftime('%d/%m/%Y')}")
-        
-        if reservas[titulo].estaVacia():
-            del reservas[titulo]
-def mostrar_catalogo(sistema):
-    print("\n--- CATÁLOGO DE MATERIALES ---")
-    materiales = sistema.listar_materiales()
+    print(f"resultado: {msg}")
+    if exito:
+        material = sistema.buscar_material(titulo)
+        if material:
+            registrar_historial("devolucion", sistema.usuarios.get(id_usuario), material)
 
+def mostrar_catalogo(sistema):
+    print("\n--- catalogo de materiales ---")
+    materiales = sistema.listar_materiales()
     if not materiales:
-        print("No hay materiales registrados.")
+        print("no hay materiales registrados.")
     else:
         for mat in materiales:
             print(f"  {mat}")
